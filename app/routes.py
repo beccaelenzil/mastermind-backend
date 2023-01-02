@@ -19,5 +19,22 @@ def root():
 
 @game_bp.route("/", methods=["POST"])
 def create_game():
-    pass
+
+    request_body = request.get_json()
+    if "level" not in request_body:
+        level = "standard"
+    else:
+        level = request_body["level"]
+
+    new_game = Game(level=level)
+    #TODO: Move generate_code method into the constructor
+    new_game.code = Game.generate_code(level)
+
+    db.session.add(new_game)
+    db.session.commit()
+
+    return {"id":new_game.id, "code": new_game.code}, 201
+
+    
+
     

@@ -8,7 +8,7 @@ class Game(db.Model):
     max_guesses = db.Column(db.Integer,default=10)
     code_length = db.Column(db.Integer,default=PARAMS["num"])
     n_choices = db.Column(db.Integer,default=PARAMS["max"]+1)
-    level = db.Column(db.Integer,default="standard")
+    level = db.Column(db.String)
     plays = db.relationship('Play', backref='game', lazy=True)
 
     def to_json(self):
@@ -17,9 +17,13 @@ class Game(db.Model):
             "code": self.code,
         }
 
-    def generate_code(self):
-        PARAMS["max"] = LEVELS[self.level]["max"]
+    #TODO: move this method into the constructor
+    @classmethod
+    def generate_code(cls, level):
+        PARAMS["max"] = LEVELS[level]["max"]
         response = requests.get(RANDOM_URL, params=PARAMS)
+        code = response.text.replace('\n','')
+        return code
         
 
 

@@ -3,7 +3,7 @@ from app.models.constants import LEVELS, PARAMS
 def validate_code(code, level):
     PARAMS["max"] = LEVELS[level]["max"]
 
-    if len(code) != PARAMS["nums"]:
+    if len(code) != PARAMS["num"]:
         return False
 
     for char in code:

@@ -1,4 +1,4 @@
-RANDOM_URL = "www.random.org/integers"
+RANDOM_URL = "http://www.random.org/integers"
 
 LEVELS =  {
     "easy": {
