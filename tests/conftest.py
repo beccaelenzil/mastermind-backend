@@ -3,6 +3,9 @@ from app import create_app
 from app import db
 from datetime import datetime
 from flask.signals import request_finished
+from app.models.game import Game
+from app.models.play import Play
+from app.models.user import User
 
 
 @pytest.fixture
@@ -26,3 +29,10 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+# game fixture
+@pytest.fixture
+def one_game(app):
+    new_game = Game()
+    db.session.add(new_game)
+    db.session.commit()
