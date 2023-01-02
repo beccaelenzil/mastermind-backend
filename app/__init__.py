@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 
 db = SQLAlchemy()
@@ -12,6 +13,8 @@ load_dotenv()
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     if test_config is None:
@@ -23,12 +26,16 @@ def create_app(test_config=None):
             "SQLALCHEMY_TEST_DATABASE_URI")
 
     # Import models here for Alembic setup
+    from app.models.game import Game
+    from app.models.play import Play
+    from app.models.user import User
 
     db.init_app(app)
     migrate.init_app(app, db)
 
     # Register Blueprints here
-    from .routes import root_bp
+    from .routes import root_bp, game_bp
     app.register_blueprint(root_bp)
+    app.register_blueprint(game_bp)
 
     return app
