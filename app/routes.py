@@ -19,7 +19,6 @@ def root():
 
 @game_bp.route("/", methods=["POST"])
 def create_game():
-
     request_body = request.get_json()
     if "level" not in request_body:
         level = "standard"
@@ -34,6 +33,8 @@ def create_game():
     db.session.commit()
 
     return {"id":new_game.id, "code": new_game.code}, 201
+
+
 
     
 

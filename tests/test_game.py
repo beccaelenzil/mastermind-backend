@@ -18,7 +18,6 @@ def test_create_standard_game(client):
     # Act
     response = client.post("/games/",json={"level": level})
     response_body = response.get_json()
-    print(response_body)
 
     # Assert
     assert response.status_code == 201
@@ -35,7 +34,6 @@ def test_create_easy_game(client):
     # Act
     response = client.post("/games/",json={"level": level})
     response_body = response.get_json()
-    print(response_body)
 
     # Assert
     assert response.status_code == 201
@@ -52,7 +50,6 @@ def test_create_hard_game(client):
     # Act
     response = client.post("/games/",json={"level": level})
     response_body = response.get_json()
-    print(response_body)
 
     # Assert
     assert response.status_code == 201

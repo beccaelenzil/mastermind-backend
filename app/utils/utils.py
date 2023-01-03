@@ -1,7 +1,11 @@
-from app.models.constants import LEVELS, PARAMS
+from app.models.constants import LEVELS, PARAMS, RANDOM_URL
+
+def return_params(level):
+    PARAMS["max"] = LEVELS[level]["max"]
+    return PARAMS
 
 def validate_code(code, level):
-    PARAMS["max"] = LEVELS[level]["max"]
+    PARAMS = return_params(level)
 
     if len(code) != PARAMS["num"]:
         return False
@@ -11,3 +15,5 @@ def validate_code(code, level):
             return False
 
     return True
+
+

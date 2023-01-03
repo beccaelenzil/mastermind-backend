@@ -1,6 +1,7 @@
 from app import db
 import requests
 from app.models.constants import PARAMS, LEVELS, RANDOM_URL
+from app.utils.utils import *
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -20,7 +21,7 @@ class Game(db.Model):
     #TODO: move this method into the constructor
     @classmethod
     def generate_code(cls, level):
-        PARAMS["max"] = LEVELS[level]["max"]
+        PARAMS = return_params(level)
         response = requests.get(RANDOM_URL, params=PARAMS)
         code = response.text.replace('\n','')
         return code
