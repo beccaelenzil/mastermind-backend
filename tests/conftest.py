@@ -32,7 +32,37 @@ def client(app):
 
 # game fixture
 @pytest.fixture
-def one_game(app):
-    new_game = Game()
+def game1234(app):
+    new_game = Game(level="standard", code="1234")
     db.session.add(new_game)
     db.session.commit()
+
+# play fixtures
+@pytest.fixture
+def play1111(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="1111")
+    db.session.add(new_play)
+    db.session.commit()
+
+@pytest.fixture
+def play2100(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="2100")
+    db.session.add(new_play)
+    db.session.commit()
+
+@pytest.fixture
+def play1200(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="1200")
+    db.session.add(new_play)
+    db.session.commit()
+
+@pytest.fixture
+def play1234(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="1234")
+    db.session.add(new_play)
+    db.session.commit()
+
