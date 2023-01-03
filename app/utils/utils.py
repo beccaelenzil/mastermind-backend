@@ -13,16 +13,19 @@ def validate_code(code, level):
         return False
 
     for char in code:
-        if int(char) < 0 or int(char) > PARAMS["max"]:
+        try:
+            i = int(char)
+        except:
             return False
+
+        if i < 0 or int(char) > PARAMS["max"]:
+            return False
+            
 
     return True
 
-def generate_code(level):
-    PARAMS = return_params(level)
-    response = requests.get(RANDOM_URL, params=PARAMS)
-    code = response.text.replace('\n','')
-    return code
+
+
 
 
 
