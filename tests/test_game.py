@@ -28,3 +28,18 @@ def test_create_game_with_code(client):
     new_game = Game.query.get(1)
     assert new_game.code == "1234"
 
+def test_read_games(client, play1111, play1234, game1234):
+    # Act
+    response = client.get("/games/")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 1
+    assert response_body[0]["code"] == "1234"
+    assert response_body[0]["id"] == 1
+    assert len(response_body[0]["plays"]) == 2
+    assert response_body[0]["plays"][0]["code"] == "1111"
+    assert response_body[0]["plays"][1]["code"] == "1234"
+
+

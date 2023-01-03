@@ -16,6 +16,7 @@ class Game(db.Model):
         return {
             "id": self.id,
             "code": self.code,
+            "plays": [play.to_json() for play in self.plays]
         }
 
     #TODO: move this method into the constructor

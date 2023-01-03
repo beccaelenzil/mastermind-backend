@@ -37,7 +37,16 @@ def create_game():
     db.session.add(new_game)
     db.session.commit()
 
-    return {"id":new_game.id, "code": new_game.code}, 201
+    return new_game.to_json(), 201
+
+@game_bp.route("/", methods=["GET"])
+def read_game():
+    games = Game.query.all()
+    game_json = []
+    for game in games:
+        game_json.append(game.to_json())
+    
+    return jsonify(game_json), 200
 
 
 @game_bp.route("/<game_id>/plays", methods=["POST"])
