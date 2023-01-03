@@ -5,7 +5,7 @@ from app.models.game import Game
 def test_new_game_1111(client):
 
     # Act
-    response = client.post("/plays/",json={"code": "1111", "level": "standard"})
+    response = client.post("/plays/",json={"code": "1111", "level": "standard", "game_id": None})
     response_body = response.get_json()
     print(response)
 

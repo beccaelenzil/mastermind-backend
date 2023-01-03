@@ -44,4 +44,27 @@ def test_read_games(client, play1111, play1234, game1234):
     assert response_body[0]["plays"][1]["code"] == "1234"
     assert response_body[0]["plays"][1]["win"]
 
+def test_read_one_game(client, play1111, play1234, game1234):
+    # Act
+    response = client.get("/games/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body["code"] == "1234"
+    assert response_body["id"] == 1
+    assert len(response_body["plays"]) == 2
+    assert response_body["plays"][0]["code"] == "1111"
+    assert not response_body["plays"][0]["win"]
+    assert response_body["plays"][1]["code"] == "1234"
+    assert response_body["plays"][1]["win"]
+
+def test_read_one_game_not_found(client, play1111, play1234, game1234):
+    # Act
+    response = client.get("/games/2")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+
 

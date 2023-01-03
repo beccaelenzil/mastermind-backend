@@ -2,6 +2,7 @@ import pytest
 from app.models.game import Game
 from app.utils import utils
 
+#TODO: refactor these tests to test the create game by making 1 play route
 def test_create_standard_game(client):
     # Arrange
     level = "standard"

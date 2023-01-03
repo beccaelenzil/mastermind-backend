@@ -19,6 +19,7 @@ def root():
         "name": "Mastermind API"
     }
 
+#TODO: Consider removing since it was replaced with creating game with the first play
 @game_bp.route("/", methods=["POST"])
 def create_game():
     request_body = request.get_json()
@@ -48,11 +49,21 @@ def read_game():
     
     return jsonify(game_json), 200
 
+@game_bp.route("/<game_id>", methods=["GET"])
+def read_one_game(game_id):
+    game = Game.query.get(game_id)
+    if not game:
+        return {"error": "No game with that game_id"}, 404
+    
+    return game.to_json(), 200
+
 
 @play_bp.route("/", methods=["POST"])
 def create_play():
     request_body = request.get_json()
-    if "game_id" in request_body:
+    if "game_id" not in request_body:
+        return {"error": "game_id must be in request_body"}, 400
+    elif request_body["game_id"]:
         # find game in database
         game = Game.query.get(request_body["game_id"])
         if not game:

@@ -16,29 +16,29 @@ print("Let's play!")
 play = "Y"
 
 while play == "Y":
-    response = requests.post("http://127.0.0.1:5000/games/",json={"level": level})
-    if response.status_code == 201:
-        response_body = response.json()
-        code = response_body["code"]
-        game_id = response_body["id"]
-        print("The code is ", response_body["code"])
-    else:
-        print("There was a problem generating a code", response)
-
     turn = 0
+    code = "YYYY"
     guess = "XXXX"
     guesses = []
+    game_id = None
     
     while code != guess and turn < MAX_TRIES:
-        response = requests.post(f"http://127.0.0.1:5000/games/{game_id}/plays", json={"code": guess})
+        response = requests.post(f"http://127.0.0.1:5000/plays/", json={"code": guess, "level": level, "game_id": game_id})
         while response.status_code != 201:
             guess = input("Guess the sequence: ")
-            response = requests.post(f"http://127.0.0.1:5000/games/{game_id}/plays", json={"code": guess})
+            response = requests.post(f"http://127.0.0.1:5000/plays/", json={"code": guess, "level": level, "game_id": game_id})
             if response.status_code != 201:
+                print(response)
                 print("Thank was not a valid guess")
         
         response_body = response.json()
         guesses.append([guess, response_body["correct_nums"], response_body["correct_pos"]])
+        if not game_id:
+            game_id = response_body["game_id"]
+            game_response = requests.get(f'http://127.0.0.1:5000/games/{game_id}')
+            game_response_body = game_response.json()
+            code = game_response_body["code"]
+            
 
         print("|# | CODE | N | N&P |")
         print("|--|------|---|-----|")
@@ -53,12 +53,15 @@ while play == "Y":
             print(guess)
             play = input("Play again? Y or N: ")
             play = play.upper()
+            game_id = None
         elif turn == MAX_TRIES:
             print("You ran out of guesses. The code was...")
             print(code)
             play = input("Play again? Y or N: ")
             play = play.upper()
+            game_id = None
         else:
             guess = "XXXX"
+            
 
 print("Thanks for playing!")
