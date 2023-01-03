@@ -2,34 +2,29 @@ from app.models.play import Play
 from app.models.game import Game
 
 # create play
-def test_1234_1111(client, game1234):
-    # Arrange
-    game = Game.query.first()
-    game_id = game.id
-    print(game_id)
+def test_new_game_1111(client):
 
     # Act
-    response = client.post(f"/games/{game_id}/plays",json={"code": "1111"})
+    response = client.post("/plays/",json={"code": "1111", "level": "standard"})
     response_body = response.get_json()
     print(response)
 
     # Assert
-    assert response_body["game_id"] == game_id
+    assert response_body["game_id"] == 1
     assert response_body["code"] == "1111"
-    assert response_body["correct_nums"] == 1
-    assert response_body["correct_pos"] == 1
-    assert not response_body["win"]
 
     play = Play.query.first()
     assert play.code == "1111"
+    game = Game.query.first()
+    assert game.id == 1
 
-def test_1234_1234(client, game1234):
+def test_1234_1234(client, game1234, play1111):
     # Arrange
     game = Game.query.first()
     game_id = game.id
 
     # Act
-    response = client.post(f"/games/{game_id}/plays",json={"code": "1234"})
+    response = client.post("/plays/",json={"code": "1234", "game_id": game_id})
     response_body = response.get_json()
 
     # Assert
@@ -39,7 +34,7 @@ def test_1234_1234(client, game1234):
     assert response_body["correct_pos"] == 4
     assert response_body["win"]
 
-    play = Play.query.first()
+    play = Play.query.get(2)
     assert play.code == "1234"
 
 

@@ -49,13 +49,25 @@ def read_game():
     return jsonify(game_json), 200
 
 
-@game_bp.route("/<game_id>/plays", methods=["POST"])
-def create_play(game_id):
-    game = Game.query.get(game_id)
-    if not game:
-        return {"error": "could not find that game"}, 400
-
+@play_bp.route("/", methods=["POST"])
+def create_play():
     request_body = request.get_json()
+    if "game_id" in request_body:
+        # find game in database
+        game = Game.query.get(request_body["game_id"])
+        if not game:
+            return {"error": "could not find that game"}, 400
+    elif "level" not in request_body:
+        return {"error": "must provide a level"}, 400
+    else:
+        # create game with first play
+        level=request_body["level"]
+        game = Game(level=level)
+        game.code = Game.generate_code(level)
+        db.session.add(game)
+        db.session.commit()
+    
+    game_id = game.id
     if "code" not in request_body:
         return {"error": "code must be in request_body"}, 400
     elif not utils.validate_code(request_body["code"], game.level):
