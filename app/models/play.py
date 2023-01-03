@@ -13,6 +13,9 @@ class Play(db.Model):
             "code": self.code,
             "game_id": self.game_id,
             "user_id": self.user_id,
+            "correct_nums": self.correct_nums(),
+            "correct_pos": self.correct_pos(),
+            "win": self.win()
         }
 
     def correct_nums(self):
@@ -32,4 +35,4 @@ class Play(db.Model):
         return count
 
     def win(self):
-        return self.correct_pos() == len(self.code)
+        return self.code == self.game.code

@@ -11,6 +11,7 @@ from app.utils import utils
 
 root_bp = Blueprint("root_bp", __name__)
 game_bp = Blueprint("game_bp", __name__,url_prefix="/games")
+play_bp = Blueprint("play_bp", __name__,url_prefix="/plays")
 
 @root_bp.route("/", methods=["GET"])
 def root():
@@ -37,6 +38,27 @@ def create_game():
     db.session.commit()
 
     return {"id":new_game.id, "code": new_game.code}, 201
+
+
+@game_bp.route("/<game_id>/plays", methods=["POST"])
+def create_play(game_id):
+    game = Game.query.get(game_id)
+    if not game:
+        return {"error": "could not find that game"}, 400
+
+    request_body = request.get_json()
+    if "code" not in request_body:
+        return {"error": "code must be in request_body"}, 400
+    elif not utils.validate_code(request_body["code"], game.level):
+        return {"error": f'{request_body["code"]} that is not a valid code' }, 400
+    
+
+    new_play = Play(game_id=game_id, code=request_body["code"])
+
+    db.session.add(new_play)
+    db.session.commit()
+
+    return new_play.to_json(), 201
 
 
 
