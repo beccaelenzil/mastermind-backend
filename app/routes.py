@@ -26,8 +26,11 @@ def create_game():
         level = request_body["level"]
 
     new_game = Game(level=level)
-    #TODO: Move generate_code method into the constructor
-    new_game.code = Game.generate_code(level)
+    if "code" not in request_body:
+        #TODO: Move generate_code method into the constructor
+        new_game.code = Game.generate_code(level)
+    else:
+        new_game.code = request_body["code"]
 
     db.session.add(new_game)
     db.session.commit()
