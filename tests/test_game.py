@@ -40,6 +40,8 @@ def test_read_games(client, play1111, play1234, game1234):
     assert response_body[0]["id"] == 1
     assert len(response_body[0]["plays"]) == 2
     assert response_body[0]["plays"][0]["code"] == "1111"
+    assert not response_body[0]["plays"][0]["win"]
     assert response_body[0]["plays"][1]["code"] == "1234"
+    assert response_body[0]["plays"][1]["win"]
 
 
