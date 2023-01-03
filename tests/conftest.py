@@ -66,3 +66,24 @@ def play1234(app, game1234):
     db.session.add(new_play)
     db.session.commit()
 
+@pytest.fixture
+def playXXXX(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="XXXX")
+    db.session.add(new_play)
+    db.session.commit()
+
+@pytest.fixture
+def play9999(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="9999")
+    db.session.add(new_play)
+    db.session.commit()
+
+@pytest.fixture
+def play00000000(app, game1234):
+    game = Game.query.first()
+    new_play = Play(game_id=game.id, code="00000000")
+    db.session.add(new_play)
+    db.session.commit()
+

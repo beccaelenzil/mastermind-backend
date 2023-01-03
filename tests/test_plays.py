@@ -37,6 +37,42 @@ def test_1234_1234(client, game1234, play1111):
     play = Play.query.get(2)
     assert play.code == "1234"
 
+def test_invalid_XXXX(client, game1234):
+    # Arrange
+    game = Game.query.first()
+    game_id = game.id
+
+    response = client.post("/plays/",json={"code": "XXXX", "game_id": game_id})
+
+    assert response.status_code == 400
+
+def test_invalid_XXXX(client, game1234):
+    # Arrange
+    game = Game.query.first()
+    game_id = game.id
+
+    response = client.post("/plays/",json={"code": "XXXX", "game_id": game_id})
+
+    assert response.status_code == 400
+
+def test_invalid_9999(client, game1234):
+    # Arrange
+    game = Game.query.first()
+    game_id = game.id
+
+    response = client.post("/plays/",json={"code": "9999", "game_id": game_id})
+
+    assert response.status_code == 400
+
+def test_invalid_00000000(client, game1234):
+    # Arrange
+    game = Game.query.first()
+    game_id = game.id
+
+    response = client.post("/plays/",json={"code": "00000000", "game_id": game_id})
+
+    assert response.status_code == 400
+
 
 # correct nums
 def test_correct_nums_1(client, game1234, play1111):
