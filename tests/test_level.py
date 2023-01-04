@@ -32,7 +32,7 @@ def test_read_levels_3(client, levels):
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert len(response_body) == 3
+    assert len(response_body.keys()) == 3
 
 
 def test_read_one_level(client, levels):

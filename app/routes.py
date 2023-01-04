@@ -123,9 +123,9 @@ def create_levels():
 @l_bp.route("/", methods=["GET"])
 def read_levels():
     levels = Level.query.all()
-    levels_json = []
+    levels_json = {}
     for level in levels:
-        levels_json.append(level.params())
+        levels_json[level.name] = level.params()
 
     return jsonify(levels_json), 200
 

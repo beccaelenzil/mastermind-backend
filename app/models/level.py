@@ -10,7 +10,7 @@ LEVELS = {
         "num": 4
     },
     "hard": {
-        "max": 9,
+        "max": 7,
         "num": 6
     },
 }
