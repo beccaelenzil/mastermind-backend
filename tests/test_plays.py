@@ -18,6 +18,8 @@ def test_new_game_1111(client):
     game = Game.query.first()
     assert game.id == 1
 
+
+
 def test_1234_1234(client, game1234, play1111):
     # Arrange
     game = Game.query.first()
@@ -36,15 +38,6 @@ def test_1234_1234(client, game1234, play1111):
 
     play = Play.query.get(2)
     assert play.code == "1234"
-
-def test_invalid_XXXX(client, game1234):
-    # Arrange
-    game = Game.query.first()
-    game_id = game.id
-
-    response = client.post("/plays/",json={"code": "XXXX", "game_id": game_id})
-
-    assert response.status_code == 400
 
 def test_invalid_XXXX(client, game1234):
     # Arrange
@@ -126,4 +119,33 @@ def test_not_win_1234_1111(client, game1234, play1200):
 def test_win(client, game1234, play1234):
     play = Play.query.first()
     assert play.win()
-    
+
+
+# 400 level errors
+def test_create_play_missing_game_id(client):
+    # Act
+    response = client.post("/plays/",json={"code": "1111", "level": "standard"})
+
+    # Assert
+    assert response.status_code == 400
+
+def test_create_play_missing_level(client):
+    # Act
+    response = client.post("/plays/",json={"code": "1111", "game_id": None})
+
+    # Assert
+    assert response.status_code == 400
+
+def test_create_play_missing_code(client):
+    # Act
+    response = client.post("/plays/",json={"level": "standard", "game_id": None})
+
+    # Assert
+    assert response.status_code == 400
+
+def test_create_play_game_not_found(client, game1234):
+    # Act
+    response = client.post("/plays/",json={"code": "1111", "level": "standard", "game_id": 2})
+
+    # Assert
+    assert response.status_code == 404

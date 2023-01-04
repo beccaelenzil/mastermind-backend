@@ -67,7 +67,7 @@ def create_play():
         # find game in database
         game = Game.query.get(request_body["game_id"])
         if not game:
-            return {"error": "could not find that game"}, 400
+            return {"error": "could not find that game"}, 404
     elif "level" not in request_body:
         return {"error": "must provide a level"}, 400
     else:
