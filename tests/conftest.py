@@ -6,6 +6,7 @@ from flask.signals import request_finished
 from app.models.game import Game
 from app.models.play import Play
 from app.models.user import User
+from app.models.level import Level
 
 
 @pytest.fixture
@@ -30,20 +31,37 @@ def app():
 def client(app):
     return app.test_client()
 
-# game fixture
+# levels fixture
+
+
 @pytest.fixture
-def game1234(app):
-    new_game = Game(level="standard", code="1234")
+def levels(app):
+    levels = ["easy", "standard", "hard"]
+    for level in levels:
+        db.session.add(Level(name=level))
+        db.session.commit()
+
+
+# game fixture
+
+
+@pytest.fixture
+def game1234(app, levels):
+    level = Level.query.filter_by(name="standard").first()
+    new_game = Game(level_id=level.id, code="1234")
     db.session.add(new_game)
     db.session.commit()
 
 # play fixtures
+
+
 @pytest.fixture
 def play1111(app, game1234):
     game = Game.query.first()
     new_play = Play(game_id=game.id, code="1111")
     db.session.add(new_play)
     db.session.commit()
+
 
 @pytest.fixture
 def play2100(app, game1234):
@@ -52,12 +70,14 @@ def play2100(app, game1234):
     db.session.add(new_play)
     db.session.commit()
 
+
 @pytest.fixture
 def play1200(app, game1234):
     game = Game.query.first()
     new_play = Play(game_id=game.id, code="1200")
     db.session.add(new_play)
     db.session.commit()
+
 
 @pytest.fixture
 def play1234(app, game1234):
@@ -66,12 +86,14 @@ def play1234(app, game1234):
     db.session.add(new_play)
     db.session.commit()
 
+
 @pytest.fixture
 def playXXXX(app, game1234):
     game = Game.query.first()
     new_play = Play(game_id=game.id, code="XXXX")
     db.session.add(new_play)
     db.session.commit()
+
 
 @pytest.fixture
 def play9999(app, game1234):
@@ -80,10 +102,10 @@ def play9999(app, game1234):
     db.session.add(new_play)
     db.session.commit()
 
+
 @pytest.fixture
 def play00000000(app, game1234):
     game = Game.query.first()
     new_play = Play(game_id=game.id, code="00000000")
     db.session.add(new_play)
     db.session.commit()
-

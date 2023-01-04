@@ -1,34 +1,31 @@
 from app import db
 import requests
-from app.models.constants import PARAMS, LEVELS, RANDOM_URL
 from app.utils.utils import *
+from app.models.level import Level
+import os
+
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    code = db.Column(db.String,default="****")
-    max_guesses = db.Column(db.Integer,default=10)
-    code_length = db.Column(db.Integer,default=PARAMS["num"])
-    n_choices = db.Column(db.Integer,default=PARAMS["max"]+1)
-    level = db.Column(db.String)
+    code = db.Column(db.String, default="****")
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'))
     plays = db.relationship('Play', backref='game', lazy=True)
 
     def to_json(self):
         return {
             "id": self.id,
             "code": self.code,
+            "level_params": self.get_level().params() if self.get_level() else None,
+            "level": self.get_level().name if self.get_level() else None,
             "plays": [play.to_json() for play in self.plays]
         }
 
-    #TODO: move this method into the constructor
-    @classmethod
-    def generate_code(cls, level):
-        PARAMS = return_params(level)
-        response = requests.get(RANDOM_URL, params=PARAMS)
-        code = response.text.replace('\n','')
+    def get_level(self):
+        return Level.query.get(self.level_id)
+
+    def generate_code(self):
+        level = self.get_level()
+        response = requests.get(os.environ.get(
+            "RANDOM_URL"), params=level.params())
+        code = response.text.replace('\n', '')
         return code
-        
-
-
-
-
-    
