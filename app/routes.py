@@ -71,13 +71,14 @@ def create_play():
     request_body = request.get_json()
     if "game_id" not in request_body:
         return {"error": "game_id must be in request_body"}, 400
-    elif "level" not in request_body or request_body["level"] not in ["easy", "standard", "hard"]:
-        return {"error": "must provide a level: easy, standard, or hard"}, 400
     elif request_body["game_id"]:
         # find existing game
         game = Game.query.get(request_body["game_id"])
         if not game:
-            return {"error": "could not find that game"}, 40
+            return {"error": "could not find that game"}, 404
+        level = Level.query.get(game.level_id)
+    elif "level" not in request_body or request_body["level"] not in ["easy", "standard", "hard"]:
+        return {"error": "must provide a level: easy, standard, or hard"}, 400
     else:
         # create new game
         level_name = request_body["level"]

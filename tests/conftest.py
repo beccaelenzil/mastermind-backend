@@ -31,12 +31,24 @@ def app():
 def client(app):
     return app.test_client()
 
+# levels fixture
+
+
+@pytest.fixture
+def levels(app):
+    levels = ["easy", "standard", "hard"]
+    for level in levels:
+        db.session.add(Level(name=level))
+        db.session.commit()
+
+
 # game fixture
 
 
 @pytest.fixture
-def game1234(app):
-    new_game = Game(level="standard", code="1234")
+def game1234(app, levels):
+    level = Level.query.filter_by(name="standard").first()
+    new_game = Game(level_id=level.id, code="1234")
     db.session.add(new_game)
     db.session.commit()
 
@@ -97,11 +109,3 @@ def play00000000(app, game1234):
     new_play = Play(game_id=game.id, code="00000000")
     db.session.add(new_play)
     db.session.commit()
-
-
-@pytest.fixture
-def levels(app):
-    levels = ["easy", "standard", "hard"]
-    for level in levels:
-        db.session.add(Level(name=level))
-        db.session.commit()

@@ -63,10 +63,9 @@ def test_read_one_game(client, levels, play1111, play1234, game1234):
     assert response_body["plays"][1]["win"]
 
 
-def test_read_one_game_not_found(client, levels, play1111, play1234, game1234):
+def test_read_one_game_not_found(client, game1234):
     # Act
     response = client.get("/games/2")
-    response_body = response.get_json()
 
     # Assert
     assert response.status_code == 404

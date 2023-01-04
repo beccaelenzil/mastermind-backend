@@ -9,8 +9,10 @@ def test_new_game_1111(client, levels):
     # Act
     response = client.post(
         "/plays/", json={"code": "1111", "level": "standard", "game_id": None})
+
+    assert response.status_code == 201
+
     response_body = response.get_json()
-    print(response)
 
     # Assert
     assert response_body["game_id"] == 1
@@ -30,8 +32,9 @@ def test_1234_1234(client, game1234, play1111, levels):
     # Act
     response = client.post(
         "/plays/", json={"code": "1234", "game_id": game_id})
-    response_body = response.get_json()
+    assert response.status_code == 201
 
+    response_body = response.get_json()
     # Assert
     assert response_body["game_id"] == game_id
     assert response_body["code"] == "1234"
@@ -167,10 +170,10 @@ def test_create_play_missing_code(client, levels):
     assert response.status_code == 400
 
 
-def test_create_play_game_not_found(client, game1234, levels):
+def test_create_play_game_not_found(client, game1234):
     # Act
     response = client.post(
-        "/plays/", json={"code": "1111", "level": "standard", "game_id": 2})
+        "/plays/", json={"code": "1111", "game_id": 2})
 
     # Assert
     assert response.status_code == 404
