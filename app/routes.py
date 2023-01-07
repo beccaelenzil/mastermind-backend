@@ -158,3 +158,14 @@ def login():
         return user.to_json(), 201
 
     return user.to_json(), 200
+
+
+@user_bp.route("/<id>", methods=["GET"])
+def get_user(id):
+    request_body = request.get_json()
+
+    user = User.query.get(id)
+    if not user:
+        return {"error": "no user with that id"}, 404
+
+    return {"summary": user.summary()}, 200

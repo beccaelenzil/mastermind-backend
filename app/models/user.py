@@ -15,9 +15,9 @@ class User(db.Model):
         }
 
     def win_streak(self):
-        i = len(self.games)
+        i = len(self.games)-1
         count = 0
-        while i > 0 and self.games[i].plays[-1] == True:
+        while i > 0 and self.games[i].plays and self.games[i].plays[-1].to_json()["win"] == True:
             count += 1
             i -= 1
 
@@ -26,14 +26,16 @@ class User(db.Model):
     def win_percentage(self):
         win = total = 0
         for game in self.games:
-            if game.plays[-1] == True:
+            if game.plays and game.plays[-1].to_json()["win"] == True:
                 win += 1
                 total += 1
             elif len(game.plays) == game.get_max_guesses():
                 total += 1
 
-        return round(win/total*100, 2)
+        if total > 0:
+            return round(win/total*100, 2)
+        else:
+            return win
 
     def summary(self):
-        print("Win Streak: ", self.win_streak(),
-              "Win %", self.win_percentage())
+        return f"Win Streak:  {self.win_streak()}, Win % {self.win_percentage()}"
