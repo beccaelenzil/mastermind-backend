@@ -14,6 +14,7 @@ root_bp = Blueprint("root_bp", __name__)
 game_bp = Blueprint("game_bp", __name__, url_prefix="/games")
 play_bp = Blueprint("play_bp", __name__, url_prefix="/plays")
 l_bp = Blueprint("l_bp", __name__, url_prefix="/levels")
+user_bp = Blueprint("user_bp", __name__, url_prefix="/users")
 
 
 @root_bp.route("/", methods=["GET"])
@@ -137,3 +138,19 @@ def read_one_level(level_id):
         return {"error": "no level with that id"}, 404
 
     return {"name": level.name, "params": level.params()}, 200
+
+
+@user_bp.route("/login", methods=["POST"])
+def login():
+    request_body = request.get_json()
+    if "username" not in request_body:
+        return {"error": "request body must include user name"}, 400
+
+    user = User.query.filter_by(username=request_body["username"]).first()
+    if not user:
+        user = User(username=request_body["username"])
+        db.session.add(user)
+        db.session.commit()
+        return user.to_json(), 201
+
+    return user.to_json(), 200
