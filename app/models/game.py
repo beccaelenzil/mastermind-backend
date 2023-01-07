@@ -16,6 +16,7 @@ class Game(db.Model):
         return {
             "id": self.id,
             "code": self.code,
+            "user_id": self.user_id,
             "level_params": self.get_level().params() if self.get_level() else None,
             "level": self.get_level().name if self.get_level() else None,
             "plays": [play.to_json() for play in self.plays]
@@ -23,6 +24,9 @@ class Game(db.Model):
 
     def get_level(self):
         return Level.query.get(self.level_id)
+
+    def get_max_guessses(self):
+        self.get_level().params()["max_guesses"]
 
     def generate_code(self):
         level = self.get_level()

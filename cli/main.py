@@ -19,8 +19,20 @@ for _ in range(5):
 print_stars()
 MAX_TRIES = generate_code(level)['max_tries']
 print(f"You have {MAX_TRIES} to guess the sequence!")
+print_stars()
+r = input("Would you like to login to track your progress? Y or N ")
+user_id = None
+if r.upper() == "Y":
+    username = input("Choose a username: ")
+    response = requests.post(
+        "http://127.0.0.1:5000/users/login", json={"username": username})
+    print("*******", response)
+    response_body = response.json()
+    user_id = response_body["id"]
+
 print("Let's play!")
 play = "Y"
+
 while play == "Y":
     turn = 0
     code = "YYYY"
@@ -30,11 +42,11 @@ while play == "Y":
 
     while code != guess and turn < MAX_TRIES:
         response = requests.post(f"http://127.0.0.1:5000/plays/",
-                                 json={"code": guess, "level": level, "game_id": game_id})
+                                 json={"code": guess, "level": level, "game_id": game_id, "user_id": user_id})
         while response.status_code != 201:
             guess = input("Guess the sequence: ")
             response = requests.post(f"http://127.0.0.1:5000/plays/",
-                                     json={"code": guess, "level": level, "game_id": game_id})
+                                     json={"code": guess, "level": level, "game_id": game_id, "user_id": user_id})
             if response.status_code != 201:
                 print(response)
                 print("Thank was not a valid guess")

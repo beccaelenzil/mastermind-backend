@@ -86,8 +86,8 @@ def create_play():
         level = Level.query.filter_by(name=level_name).first()
         game = Game(level_id=level.id)
         game.code = game.generate_code()
-        if "id" in request_body:
-            user = User.query.get(request_body["id"])
+        if "user_id" in request_body:
+            user = User.query.get(request_body["user_id"])
             if user:
                 game.user_id = user.id
         db.session.add(game)

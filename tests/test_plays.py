@@ -28,7 +28,7 @@ def test_new_game_1111(client, user1, levels):
 
     # Act
     response = client.post(
-        "/plays/", json={"code": "1111", "level": "standard", "game_id": None, "id": 1})
+        "/plays/", json={"code": "1111", "level": "standard", "game_id": None, "user_id": 1})
 
     assert response.status_code == 201
 
