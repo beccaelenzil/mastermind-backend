@@ -49,10 +49,29 @@ class User(db.Model):
         else:
             return {"percent": 0, "total": 0, "win": 0}
 
+    def make_histogram(self):
+        num_plays = []
+        for game in self.games:
+            num_plays.append(len(game.plays))
+
+        freq = {}
+        for num in range(0, 11):
+            freq[num] = 0
+
+        for num in num_plays:
+            freq[num] += 1
+
+        histogram = {}
+        for num in range(1, max(num_plays)):
+            histogram[num] = f"{'x'*freq[num]}"
+        print(histogram)
+        return [histogram, num_plays]
+
     def summary(self):
         return {
             "Win Streak":  self.win_streak(),
             "Win %": self.win_percentage()["percent"],
             "Games won": self.win_percentage()["win"],
-            "Total games": self.win_percentage()["total"]
+            "Total games": self.win_percentage()["total"],
+            "Number of plays distribution": self.make_histogram()[0]
         }

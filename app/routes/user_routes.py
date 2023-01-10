@@ -28,9 +28,9 @@ def get_user(id):
     if not user:
         return {"error": "no user with that id"}, 404
 
-    return {"1 username": user.username,
-            "2 performance summary": user.summary(),
-            "3 games": user.to_json()["games"]}, 200
+    return {"username": user.username,
+            "performance summary": user.summary(),
+            "games": user.to_json()["games"]}, 200
 
 
 @user_bp.route("/", methods=["GET"])

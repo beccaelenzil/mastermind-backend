@@ -1,5 +1,7 @@
 from game_functions import *
 import requests
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 url = os.environ.get("API_URL")
 
@@ -52,7 +54,7 @@ while play == "Y":
             response = requests.get(f"{url}users/{user_id}")
             response_body = response.json()
 
-            print(response_body["2 performance summary"])
+            pp.pprint(response_body["performance summary"])
 
 
 print("Thanks for playing!")
