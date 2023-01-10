@@ -48,5 +48,11 @@ while play == "Y":
             guess = "XXXX"
             status_code = 400
 
+        if user_id and play != "Y":
+            response = requests.get(f"{url}users/{user_id}")
+            response_body = response.json()
+
+            print(response_body["2 performance summary"])
+
 
 print("Thanks for playing!")
