@@ -9,12 +9,14 @@ class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     code = db.Column(db.String, default="****")
     level_id = db.Column(db.Integer, db.ForeignKey('level.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     plays = db.relationship('Play', backref='game', lazy=True)
 
     def to_json(self):
         return {
             "id": self.id,
             "code": self.code,
+            "user_id": self.user_id,
             "level_params": self.get_level().params() if self.get_level() else None,
             "level": self.get_level().name if self.get_level() else None,
             "plays": [play.to_json() for play in self.plays]
@@ -22,6 +24,9 @@ class Game(db.Model):
 
     def get_level(self):
         return Level.query.get(self.level_id)
+
+    def get_max_guesses(self):
+        self.get_level().params()["max_guesses"]
 
     def generate_code(self):
         level = self.get_level()

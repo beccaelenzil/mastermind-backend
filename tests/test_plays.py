@@ -24,6 +24,27 @@ def test_new_game_1111(client, levels):
     assert game.id == 1
 
 
+def test_new_game_1111(client, user1, levels):
+
+    # Act
+    response = client.post(
+        "/plays/", json={"code": "1111", "level": "standard", "game_id": None, "user_id": 1})
+
+    assert response.status_code == 201
+
+    response_body = response.get_json()
+
+    # Assert
+    assert response_body["game_id"] == 1
+    assert response_body["code"] == "1111"
+
+    play = Play.query.first()
+    assert play.code == "1111"
+    game = Game.query.first()
+    assert game.id == 1
+    assert game.user_id == 1
+
+
 def test_1234_1234(client, game1234, play1111, levels):
     # Arrange
     game = Game.query.first()

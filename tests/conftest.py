@@ -109,3 +109,12 @@ def play00000000(app, game1234):
     new_play = Play(game_id=game.id, code="00000000")
     db.session.add(new_play)
     db.session.commit()
+
+# user
+
+
+@pytest.fixture
+def user1(app):
+    user = User(username="becca")
+    db.session.add(user)
+    db.session.commit()
