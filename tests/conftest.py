@@ -44,7 +44,6 @@ def levels(app):
 
 # game fixture
 
-
 @pytest.fixture
 def game1234(app, levels):
     level = Level.query.filter_by(name="standard").first()

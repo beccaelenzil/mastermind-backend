@@ -80,9 +80,12 @@ def login():
         response = requests.post(
             f"{url}users/login", json={"username": username})
         response_body = response.json()
-        user_id = response_body["id"]
-    else:
-        user_id = None
+        if response.status_code == 200:
+            print(f"Welcome back {username}!")
+        elif response.status_code == 201:
+            print(f"We created a new user, {username}")
+
+        return response_body["id"]
 
 
 def initialize():

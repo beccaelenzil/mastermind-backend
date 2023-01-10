@@ -1,4 +1,5 @@
 from app.models.level import Level
+from app.models.game import Game
 
 
 def test_create_levels(client):
