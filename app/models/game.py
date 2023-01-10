@@ -25,9 +25,6 @@ class Game(db.Model):
     def get_level(self):
         return Level.query.get(self.level_id)
 
-    def get_max_guesses(self):
-        self.get_level().params()["max_guesses"]
-
     def generate_code(self):
         level = self.get_level()
         response = requests.get(os.environ.get(
