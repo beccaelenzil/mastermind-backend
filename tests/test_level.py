@@ -20,6 +20,24 @@ def test_create_levels(client):
     assert hard["name"] == "hard"
 
 
+def test_create_levels_when_there_are_already_levels_in_db(client, levels):
+    # Act
+    response = client.post("/levels/")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 201
+    assert len(response_body) == 3
+
+    easy = response_body[0]
+    standard = response_body[1]
+    hard = response_body[2]
+
+    assert easy["name"] == "easy"
+    assert standard["name"] == "standard"
+    assert hard["name"] == "hard"
+
+
 def test_read_levels(client):
     response = client.get("/levels/")
     response_body = response.get_json()

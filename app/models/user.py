@@ -64,14 +64,17 @@ class User(db.Model):
         histogram = {}
         for num in range(1, max(num_plays)):
             histogram[num] = f"{'x'*freq[num]}"
-        print(histogram)
-        return [histogram, num_plays]
+        return histogram
 
     def summary(self):
-        return {
+        summary_json = {
             "Win Streak":  self.win_streak(),
             "Win %": self.win_percentage()["percent"],
             "Games won": self.win_percentage()["win"],
             "Total games": self.win_percentage()["total"],
-            "Number of plays distribution": self.make_histogram()[0]
         }
+
+        if (len(self.games)):
+            summary_json["Distribution of number of plays"] = self.make_histogram()
+
+        return summary_json
