@@ -13,7 +13,7 @@ from app.utils import utils
 root_bp = Blueprint("root_bp", __name__)
 game_bp = Blueprint("game_bp", __name__, url_prefix="/games")
 play_bp = Blueprint("play_bp", __name__, url_prefix="/plays")
-l_bp = Blueprint("l_bp", __name__, url_prefix="/levels")
+level_bp = Blueprint("level_bp", __name__, url_prefix="/levels")
 user_bp = Blueprint("user_bp", __name__, url_prefix="/users")
 
 
@@ -26,26 +26,26 @@ def root():
 # TODO: Consider removing since it was replaced with creating game with the first play
 
 
-@game_bp.route("/", methods=["POST"])
-def create_game():
-    request_body = request.get_json()
-    if "level" not in request_body or request_body["level"] not in ["easy", "standard", "hard"]:
-        level_name = "standard"
-    else:
-        level_name = request_body["level"]
+# @game_bp.route("/", methods=["POST"])
+# def create_game():
+#     request_body = request.get_json()
+#     if "level" not in request_body or request_body["level"] not in ["easy", "standard", "hard"]:
+#         level_name = "standard"
+#     else:
+#         level_name = request_body["level"]
 
-    level = Level.query.filter_by(name=level_name).first()
-    new_game = Game(level_id=level.id)
+#     level = Level.query.filter_by(name=level_name).first()
+#     new_game = Game(level_id=level.id)
 
-    if "code" not in request_body:
-        new_game.code = new_game.generate_code()
-    else:
-        new_game.code = request_body["code"]
+#     if "code" not in request_body:
+#         new_game.code = new_game.generate_code()
+#     else:
+#         new_game.code = request_body["code"]
 
-    db.session.add(new_game)
-    db.session.commit()
+#     db.session.add(new_game)
+#     db.session.commit()
 
-    return new_game.to_json(), 201
+#     return new_game.to_json(), 201
 
 
 @game_bp.route("/", methods=["GET"])
@@ -81,23 +81,29 @@ def create_play():
     elif "level" not in request_body or request_body["level"] not in ["easy", "standard", "hard"]:
         return {"error": "must provide a level: easy, standard, or hard"}, 400
     else:
+
         # create new game
         level_name = request_body["level"]
         level = Level.query.filter_by(name=level_name).first()
         game = Game(level_id=level.id)
         game.code = game.generate_code()
+
+        # validate code
+        if "code" not in request_body:
+            return {"error": "code must be in request_body"}, 400
+        elif not level.validate_code(request_body["code"]):
+            return {"error": f'{request_body["code"]} that is not a valid code'}, 400
+
         if "user_id" in request_body:
             user = User.query.get(request_body["user_id"])
             if user:
                 game.user_id = user.id
+
         db.session.add(game)
         db.session.commit()
+        print("adding game: ", game.id)
 
-    if "code" not in request_body:
-        return {"error": "code must be in request_body"}, 400
-    elif not level.validate_code(request_body["code"]):
-        return {"error": f'{request_body["code"]} that is not a valid code'}, 400
-
+    # create play
     new_play = Play(game_id=game.id, code=request_body["code"])
 
     db.session.add(new_play)
@@ -106,7 +112,7 @@ def create_play():
     return new_play.to_json(), 201
 
 
-@l_bp.route("/", methods=["POST"])
+@level_bp.route("/", methods=["POST"])
 def create_levels():
     # Delete existing
     levels = Level.query.all()
@@ -125,7 +131,7 @@ def create_levels():
     return jsonify(levels_json), 201
 
 
-@l_bp.route("/", methods=["GET"])
+@level_bp.route("/", methods=["GET"])
 def read_levels():
     levels = Level.query.all()
     levels_json = {}
@@ -135,7 +141,7 @@ def read_levels():
     return jsonify(levels_json), 200
 
 
-@l_bp.route("/<level_id>", methods=["GET"])
+@level_bp.route("/<level_id>", methods=["GET"])
 def read_one_level(level_id):
     level = Level.query.get(level_id)
     if not level:
@@ -162,10 +168,22 @@ def login():
 
 @user_bp.route("/<id>", methods=["GET"])
 def get_user(id):
-    request_body = request.get_json()
-
     user = User.query.get(id)
     if not user:
         return {"error": "no user with that id"}, 404
 
     return {"summary": user.summary()}, 200
+
+
+@game_bp.route("/", methods=["DELETE"])
+def delete_all_games():
+    # Delete existing
+    games = Game.query.all()
+    for game in games:
+        plays = Play.query.filter_by(game_id=game.id)
+        for play in plays:
+            db.session.delete(play)
+        db.session.delete(game)
+        db.session.commit()
+
+    return {"success": "delete all games"}, 20
