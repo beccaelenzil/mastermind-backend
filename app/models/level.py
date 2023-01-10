@@ -34,10 +34,9 @@ class Level(db.Model):
         }
 
     def validate_code(self, code):
-        params = self.params()
+        print("validating code...")
 
-        if len(code) != params["num"]:
-            return False
+        params = self.params()
 
         for char in code:
             try:
@@ -47,5 +46,8 @@ class Level(db.Model):
 
             if i < 0 or int(char) > params["max"]:
                 return False
+
+        if len(code) != params["num"]:
+            return False
 
         return True

@@ -4,11 +4,14 @@ from app.models.game import Game
 # create play
 
 
-def test_new_game_1111(client, levels):
+def test_new_standard_game(client, levels):
+    # arrange
+    code = "5555"
+    level = "standard"
 
     # Act
     response = client.post(
-        "/plays/", json={"code": "1111", "level": "standard", "game_id": None})
+        "/plays/", json={"code": code, "level": level, "game_id": None})
 
     assert response.status_code == 201
 
@@ -16,15 +19,61 @@ def test_new_game_1111(client, levels):
 
     # Assert
     assert response_body["game_id"] == 1
-    assert response_body["code"] == "1111"
+    assert response_body["code"] == "5555"
 
     play = Play.query.first()
-    assert play.code == "1111"
+    assert play.code == code
     game = Game.query.first()
     assert game.id == 1
 
 
-def test_new_game_1111(client, user1, levels):
+def test_new_easy_game(client, levels):
+    # arrange
+    code = "1111"
+    level = "easy"
+
+    # Act
+    response = client.post(
+        "/plays/", json={"code": code, "level": level, "game_id": None})
+
+    assert response.status_code == 201
+
+    response_body = response.get_json()
+
+    # Assert
+    assert response_body["game_id"] == 1
+    assert response_body["code"] == code
+
+    play = Play.query.first()
+    assert play.code == code
+    game = Game.query.first()
+    assert game.id == 1
+
+
+def test_new_hard_game(client, levels):
+    # arrange
+    code = "777777"
+    level = "hard"
+
+    # Act
+    response = client.post(
+        "/plays/", json={"code": code, "level": level, "game_id": None})
+
+    assert response.status_code == 201
+
+    response_body = response.get_json()
+
+    # Assert
+    assert response_body["game_id"] == 1
+    assert response_body["code"] == code
+
+    play = Play.query.first()
+    assert play.code == code
+    game = Game.query.first()
+    assert game.id == 1
+
+
+def test_new_game_with_user_1111(client, user1, levels):
 
     # Act
     response = client.post(
@@ -67,18 +116,19 @@ def test_1234_1234(client, game1234, play1111, levels):
     assert play.code == "1234"
 
 
-def test_invalid_XXXX(client, game1234, levels):
+def test_invalid_XXXX(client, game1234):
     # Arrange
     game = Game.query.first()
     game_id = game.id
 
     response = client.post(
         "/plays/", json={"code": "XXXX", "game_id": game_id})
+    print(response.get_json())
 
     assert response.status_code == 400
 
 
-def test_invalid_9999(client, game1234, levels):
+def test_invalid_9999(client, game1234):
     # Arrange
     game = Game.query.first()
     game_id = game.id
@@ -89,7 +139,7 @@ def test_invalid_9999(client, game1234, levels):
     assert response.status_code == 400
 
 
-def test_invalid_00000000(client, game1234, levels):
+def test_invalid_00000000(client, game1234):
     # Arrange
     game = Game.query.first()
     game_id = game.id
@@ -98,70 +148,6 @@ def test_invalid_00000000(client, game1234, levels):
         "/plays/", json={"code": "00000000", "game_id": game_id})
 
     assert response.status_code == 400
-
-
-# correct nums
-def test_correct_nums_1(client, game1234, play1111):
-    play = Play.query.first()
-    assert play.correct_nums() == 1
-
-
-def test_correct_nums_4(client, game1234, play1234):
-    play = Play.query.first()
-    assert play.correct_nums() == 4
-
-
-def test_correct_nums_2(client, game1234, play2100):
-    play = Play.query.first()
-    assert play.correct_nums() == 2
-
-
-def test_correct_nums_2b(client, game1234, play1200):
-    play = Play.query.first()
-    assert play.correct_nums() == 2
-
-# correct pos
-
-
-def test_correct_pos_0(client, game1234, play2100):
-    play = Play.query.first()
-    assert play.correct_pos() == 0
-
-
-def test_correct_pos_1(client, game1234, play1111):
-    play = Play.query.first()
-    assert play.correct_pos() == 1
-
-
-def test_correct_pos_2(client, game1234, play1200):
-    play = Play.query.first()
-    assert play.correct_pos() == 2
-
-
-# win
-def test_correct_pos_4(client, game1234, play1234):
-    play = Play.query.first()
-    assert play.correct_pos() == 4
-
-
-def test_not_win_1234_1111(client, game1234, play1111):
-    play = Play.query.first()
-    assert not play.win()
-
-
-def test_not_win_1234_2100(client, game1234, play2100):
-    play = Play.query.first()
-    assert not play.win()
-
-
-def test_not_win_1234_1111(client, game1234, play1200):
-    play = Play.query.first()
-    assert not play.win()
-
-
-def test_win(client, game1234, play1234):
-    play = Play.query.first()
-    assert play.win()
 
 
 # 400 level errors

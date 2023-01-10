@@ -36,7 +36,11 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
 
     # Register Blueprints here
-    from .routes import root_bp, game_bp, play_bp, level_bp, user_bp
+    from .routes.routes import root_bp
+    from .routes.game_routes import game_bp
+    from .routes.user_routes import user_bp
+    from .routes.play_routes import play_bp
+    from .routes.level_routes import level_bp
     app.register_blueprint(root_bp)
     app.register_blueprint(game_bp)
     app.register_blueprint(play_bp)
