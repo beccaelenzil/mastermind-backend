@@ -47,7 +47,7 @@ class User(db.Model):
         if total > 0:
             return {"percent": round(win/total*100, 2), "total": total, "win": win}
         else:
-            return win
+            return {"percent": 0, "total": 0, "win": 0}
 
     def summary(self):
         return {

@@ -31,3 +31,13 @@ def get_user(id):
     return {"1 username": user.username,
             "2 performance summary": user.summary(),
             "3 games": user.to_json()["games"]}, 200
+
+
+@user_bp.route("/", methods=["GET"])
+def get_all_users():
+    users = User.query.all()
+    user_json = []
+    for user in users:
+        user_json.append({"user_id": user.id, "username": user.username})
+
+    return jsonify(user_json), 200
