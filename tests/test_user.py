@@ -4,25 +4,25 @@ from app.models.user import User
 def test_existing_user(client, user1):
     # Act
     response = client.post(
-        "/users/login", json={"username": "becca"})
+        "/users/login", json={"email": "becca"})
 
     assert response.status_code == 200
     response_body = response.get_json()
-    response_body["username"] = "becca"
+    response_body["email"] = "becca"
 
 
 def test_new_user(client):
     # Act
     response = client.post(
-        "/users/login", json={"username": "becca"})
+        "/users/login", json={"email": "becca"})
 
     assert response.status_code == 201
     response_body = response.get_json()
-    response_body["username"] = "becca"
+    response_body["email"] = "becca"
 
     users = User.query.all()
     assert len(users) == 1
-    assert users[0].username == "becca"
+    assert users[0].email == "becca"
 
 
 def test_no_request_body(client):
@@ -69,7 +69,7 @@ def test_win_2_lose_1(client, user_win_2_lose_1):
     user = users[0]
 
     # Act
-    response = client.get(f"/users/{user.id}")
+    response = client.get(f"/users/{user.uid}")
     response.status_code == 200
 
     response_body = response.get_json()
@@ -79,7 +79,7 @@ def test_win_2_lose_1(client, user_win_2_lose_1):
     assert summary["Win Streak"] == 2
     assert summary["Total games"] == 3
     assert summary["Win %"] == 66.67
-    assert response_body["username"] == user.username
+    assert response_body["email"] == user.email
     assert len(response_body["games"]) == 3
 
 
@@ -88,7 +88,7 @@ def test_user_no_games(client, users2):
     user = users[0]
 
     # Act
-    response = client.get(f"/users/{user.id}")
+    response = client.get(f"/users/{user.uid}")
     response.status_code == 200
 
     response_body = response.get_json()
@@ -98,5 +98,5 @@ def test_user_no_games(client, users2):
     assert summary["Win Streak"] == 0
     assert summary["Total games"] == 0
     assert summary["Win %"] == 0
-    assert response_body["username"] == user.username
+    assert response_body["email"] == user.email
     assert len(response_body["games"]) == 0

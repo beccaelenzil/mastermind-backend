@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a2cd00c0e2ad
+Revision ID: 495a18e9d71a
 Revises: 
-Create Date: 2023-01-06 16:12:54.887004
+Create Date: 2023-01-11 09:40:26.553872
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a2cd00c0e2ad'
+revision = '495a18e9d71a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,10 +24,10 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('uid', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('username', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('email', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('uid')
     )
     op.create_table('game',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -35,7 +35,7 @@ def upgrade():
     sa.Column('level_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['level_id'], ['level.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.uid'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('play',

@@ -3,16 +3,16 @@ from app.models.game import Game
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
-    username = db.Column(db.String)
+    email = db.Column(db.String)
     games = db.relationship('Game', backref='user', lazy=True)
 
     def to_json(self):
         return {
-            "id": self.id,
+            "uid": self.uid,
             "name": self.name,
-            "username": self.username,
+            "email": self.email,
             "games": [game.to_json() for game in self.games]
         }
 
