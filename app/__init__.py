@@ -18,6 +18,12 @@ def create_app(test_config=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    app.config['FIREBASE_API_KEY'] = os.environ.get("firebaseProjectApiKey")
+    app.config['FIREBASE_PROJECT_ID'] = os.environ.get("firebaseProjectId")
+    # <-- coma separated list, see Providers above
+    app.config['FIREBASE_AUTH_SIGN_IN_OPTIONS'] = 'google'
+    app.config['SECRET_KEY'] = os.environ.get("secretKey")  # <-- random string
+
     if test_config is None:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
             "SQLALCHEMY_DATABASE_URI")
