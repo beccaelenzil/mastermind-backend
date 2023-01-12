@@ -72,6 +72,9 @@ class User(db.Model):
         histogram = {}
         for num in range(1, max(num_plays)+1):
             histogram[num] = f"{'x'*freq[num]}"
+
+        sorted_hist = sorted(histogram.items(), key=lambda x: x[1])
+        sorted_hist = dict(sorted_hist)
         return [histogram, freq]
 
     def summary(self):

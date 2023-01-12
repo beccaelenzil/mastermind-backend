@@ -1,17 +1,14 @@
 
-from flask import Blueprint, request, url_for, redirect, session, jsonify
+from flask import Blueprint, request, url_for, redirect, session
 import json
 from ..models.user import User, get_user
 from app import db
 from oauthlib.oauth2 import WebApplicationClient
 import requests
 import os
-from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
 
-
-# Flask-Login helper to retrieve a user from our db
-
+root_bp = Blueprint("root_bp", __name__)
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
@@ -20,8 +17,6 @@ GOOGLE_DISCOVERY_URL = (
 )
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
-
-root_bp = Blueprint("root_bp", __name__)
 
 
 def get_google_provider_cfg():

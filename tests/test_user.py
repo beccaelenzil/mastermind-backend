@@ -14,15 +14,15 @@ def test_existing_user(client, user1):
 def test_new_user(client):
     # Act
     response = client.post(
-        "/users/login", json={"email": "becca"})
+        "/users/login", json={"email": "becca@ada.dev"})
 
     assert response.status_code == 201
     response_body = response.get_json()
-    response_body["email"] = "becca"
+    response_body["email"] = "becca@ada.dev"
 
     users = User.query.all()
     assert len(users) == 1
-    assert users[0].email == "becca"
+    assert users[0].email == "becca@ada.dev"
 
 
 def test_no_request_body(client):
