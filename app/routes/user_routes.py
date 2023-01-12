@@ -34,10 +34,7 @@ def get_user(id):
     if not user:
         return {"error": "no user with that id"}, 404
 
-    require_login(user)
-
-    return {"email": user.email,
-            "performance summary": user.summary(),
+    return {"performance summary": user.summary(),
             "games": user.to_json()["games"]}, 200
 
 
