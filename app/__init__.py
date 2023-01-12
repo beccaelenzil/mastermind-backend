@@ -30,8 +30,11 @@ def create_app(test_config=None):
          r"/*": {"origins": "*"}}, send_wildcard=True)
 
     if test_config is None:
-        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+        uri = os.environ.get(
             "SQLALCHEMY_DATABASE_URI")
+        if uri.startswith("postgres://"):
+            uri = uri.replace("postgres://", "postgresql://", 1)
+        app.config["SQLALCHEMY_DATABASE_URI"] = uri
     else:
         app.config["TESTING"] = True
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
