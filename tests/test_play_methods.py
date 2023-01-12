@@ -1,7 +1,5 @@
 from app.models.play import Play
 
-# correct nums
-
 
 def test_correct_nums_1(client, game1234, play1111):
     play = Play.query.first()

@@ -1,6 +1,5 @@
 import pytest
 from app.models.game import Game
-from app.utils import utils
 
 
 def test_root_route(client):

@@ -1,6 +1,5 @@
 from app import db
 import requests
-from app.utils.utils import *
 from app.models.level import Level
 import os
 
