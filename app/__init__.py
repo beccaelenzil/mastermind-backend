@@ -1,6 +1,7 @@
 
-from flask import Flask
+from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_session import Session
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
@@ -18,11 +19,13 @@ def create_app(test_config=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    app.config['FIREBASE_API_KEY'] = os.environ.get("firebaseProjectApiKey")
-    app.config['FIREBASE_PROJECT_ID'] = os.environ.get("firebaseProjectId")
-    # <-- coma separated list, see Providers above
-    app.config['FIREBASE_AUTH_SIGN_IN_OPTIONS'] = 'google'
+    app.config['SESSION_COOKIE_NAME'] = "session"
     app.config['SECRET_KEY'] = os.environ.get("secretKey")  # <-- random string
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    sess = Session()
+    sess.init_app(app)
 
     if test_config is None:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -42,7 +45,7 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
 
     # Register Blueprints here
-    from .routes.routes import root_bp
+    from .routes.login_routes import root_bp
     from .routes.game_routes import game_bp
     from .routes.user_routes import user_bp
     from .routes.play_routes import play_bp

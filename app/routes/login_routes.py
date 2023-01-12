@@ -21,21 +21,11 @@ GOOGLE_DISCOVERY_URL = (
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-
 root_bp = Blueprint("root_bp", __name__)
-CORS(root_bp, resources=r'/login')
-CORS(root_bp, resources=r'/login/callback')
 
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
-
-
-@root_bp.route("/csrf")
-def get_csrf():
-    response = jsonify(detail="success")
-    response.headers.set("X-CSRFToken", generate_csrf())
-    return response
 
 
 @root_bp.route("/", methods=["GET"])
