@@ -2,17 +2,24 @@ from app import db
 from app.models.game import Game
 
 
+def get_user(google_uid):
+    user = User.query.filter_by(google_uid=google_uid).first()
+    return user
+
+
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    google_uid = db.Column(db.String)
     name = db.Column(db.String)
-    username = db.Column(db.String)
+    email = db.Column(db.String)
     games = db.relationship('Game', backref='user', lazy=True)
 
     def to_json(self):
         return {
-            "id": self.id,
+            "uid": self.uid,
             "name": self.name,
-            "username": self.username,
+            "email": self.email,
+            "google_uid": self.google_uid,
             "games": [game.to_json() for game in self.games]
         }
 
@@ -53,6 +60,7 @@ class User(db.Model):
         num_plays = []
         for game in self.games:
             num_plays.append(len(game.plays))
+        print(len(num_plays))
 
         freq = {}
         for num in range(0, 11):
@@ -62,9 +70,12 @@ class User(db.Model):
             freq[num] += 1
 
         histogram = {}
-        for num in range(1, max(num_plays)):
+        for num in range(1, max(num_plays)+1):
             histogram[num] = f"{'x'*freq[num]}"
-        return histogram
+
+        sorted_hist = sorted(histogram.items(), key=lambda x: x[1])
+        sorted_hist = dict(sorted_hist)
+        return [histogram, freq]
 
     def summary(self):
         summary_json = {
@@ -75,6 +86,7 @@ class User(db.Model):
         }
 
         if (len(self.games)):
-            summary_json["Distribution of number of plays"] = self.make_histogram()
+            summary_json["Distribution of number of plays"] = self.make_histogram()[
+                0]
 
         return summary_json

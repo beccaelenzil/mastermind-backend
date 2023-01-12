@@ -76,16 +76,16 @@ def get_and_print_level():
 def login():
     r = input("Would you like to login to track your progress? Y or N ")
     if r.upper() == "Y":
-        username = input("Choose a username: ")
+        email = input("Input your email: ")
         response = requests.post(
-            f"{url}users/login", json={"username": username})
+            f"{url}users/login", json={"email": email})
         response_body = response.json()
         if response.status_code == 200:
-            print(f"Welcome back {username}!")
+            print(f"Welcome back {email}!")
         elif response.status_code == 201:
-            print(f"We created a new user, {username}")
+            print(f"We created a new user, {email}")
 
-        return response_body["id"]
+        return response_body["uid"]
 
 
 def initialize():

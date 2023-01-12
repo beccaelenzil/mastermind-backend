@@ -114,18 +114,18 @@ def play00000000(app, game1234):
 
 @pytest.fixture
 def user1(app):
-    user = User(username="becca")
+    user = User(email="becca")
     db.session.add(user)
     db.session.commit()
 
 
 @pytest.fixture
 def user_win_2_lose_1(app, levels):
-    user = User(username="becca")
+    user = User(email="becca")
     db.session.add(user)
     db.session.commit()
     level = Level.query.filter_by(name="easy").first()
-    new_game = Game(level_id=level.id, code="1234", user_id=user.id)
+    new_game = Game(level_id=level.id, code="1234", user_id=user.uid)
     db.session.add(new_game)
     db.session.commit()
     # lost game
@@ -135,7 +135,7 @@ def user_win_2_lose_1(app, levels):
         db.session.commit()
     # 2 win games
     for i in range(2):
-        new_game = Game(level_id=level.id, code="1234", user_id=user.id)
+        new_game = Game(level_id=level.id, code="1234", user_id=user.uid)
         db.session.add(new_game)
         db.session.commit()
         play1234 = Play(code="1234", game_id=new_game.id)
@@ -145,10 +145,10 @@ def user_win_2_lose_1(app, levels):
 
 @pytest.fixture
 def users2(app):
-    user = User(username="a")
+    user = User(email="a")
     db.session.add(user)
     db.session.commit()
 
-    user = User(username="b")
+    user = User(email="b")
     db.session.add(user)
     db.session.commit()

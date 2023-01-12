@@ -43,7 +43,7 @@ def create_play():
         if "user_id" in request_body:
             user = User.query.get(request_body["user_id"])
             if user:
-                game.user_id = user.id
+                game.user_id = user.uid
 
         db.session.add(game)
         db.session.commit()
