@@ -116,9 +116,10 @@ def callback():
     response = make_response(user.to_json(), response_code)
     response.headers.add('Access-Control-Allow-Origin', '*')
     print("session", session)
-    return response
+    # return response
 
     # return redirect(url_for("root_bp.index"))
+    return redirect(f"http://localhost:3000/{user.uid}")
 
 
 @root_bp.route("/logout")
