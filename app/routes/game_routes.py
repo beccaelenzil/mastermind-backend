@@ -25,6 +25,10 @@ def read_game():
 
 @game_bp.route("/<game_id>", methods=["GET"])
 def read_one_game(game_id):
+    # addition for front end - TODO: remove once frontend refactored
+    if game_id == 0:
+        return {"message": "initial render"}, 202
+
     game = Game.query.get(game_id)
     if not game:
         return {"error": "No game with that game_id"}, 404

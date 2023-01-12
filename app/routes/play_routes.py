@@ -23,9 +23,6 @@ def create_play():
     if "game_id" not in request_body:
         return {"error": "game_id must be in request_body"}, 400
     elif request_body["game_id"]:
-        # addition for front end - TODO: remove once frontend refactored
-        if "game_id" == 0:
-            return {"message": "initial render"}, 202
         # find existing game
         game = Game.query.get(request_body["game_id"])
         if not game:
