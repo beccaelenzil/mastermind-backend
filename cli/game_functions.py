@@ -76,7 +76,7 @@ def get_and_print_level():
 def login():
     r = input("Would you like to login to track your progress? Y or N ")
     if r.upper() == "Y":
-        email = input("Input your email: ")
+        email = input("Input a username: ")
         response = requests.post(
             f"{url}users/login", json={"email": email})
         response_body = response.json()
