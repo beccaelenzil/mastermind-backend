@@ -1,5 +1,5 @@
 
-from flask import Blueprint, request, url_for, redirect, session
+from flask import Blueprint, request, make_response, url_for, redirect, session
 import json
 from ..models.user import User, get_user
 from app import db
@@ -7,6 +7,7 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 import os
 from flask_wtf.csrf import generate_csrf
+from flask_cors import cross_origin
 
 root_bp = Blueprint("root_bp", __name__)
 
@@ -33,8 +34,9 @@ def root():
 @root_bp.route("/current", methods=["GET"])
 def index():
     current_user = None
-    if "google_uid" in session:
-        current_user = get_user(session["google_uid"])
+    print("session", session)
+    if "uid" in session:
+        current_user = User.query.get(session["uid"])
 
     if current_user:
         return current_user.to_json(), 200
@@ -109,13 +111,18 @@ def callback():
         response_code = 201
 
     session["google_uid"] = user.google_uid
+    session["uid"] = user.uid
 
-    # return user.to_json(), response_code
+    response = make_response(user.to_json(), response_code)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    print("session", session)
+    return response
 
-    return redirect(url_for("root_bp.index"))
+    # return redirect(url_for("root_bp.index"))
 
 
 @root_bp.route("/logout")
 def logout():
     session["google_uid"] = None
+    session["uid"] = None
     return {"success": "logged out"}
