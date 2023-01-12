@@ -113,13 +113,13 @@ def callback():
     session["google_uid"] = user.google_uid
     session["uid"] = user.uid
 
-    response = make_response(user.to_json(), response_code)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    print("session", session)
+    # response = make_response(user.to_json(), response_code)
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    # print("session", session)
     # return response
 
-    # return redirect(url_for("root_bp.index"))
-    return redirect(f"http://localhost:3000/{user.uid}")
+    return redirect(url_for("root_bp.index"))
+    # return redirect(f"http://localhost:3000/{user.uid}")
 
 
 @root_bp.route("/logout")
