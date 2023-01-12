@@ -23,6 +23,12 @@ class User(db.Model):
             "games": [game.to_json() for game in self.games]
         }
 
+    def to_json_less_detail(self):
+        return {
+            "uid": self.uid,
+            "num games": len(self.games),
+        }
+
     def sort_games(self):
         games = self.to_json()["games"]
         games.sort(key=lambda game: game["id"])

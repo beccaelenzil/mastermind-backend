@@ -1,9 +1,15 @@
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session, abort, make_response
 from ..models.user import User
 from app import db
 
 user_bp = Blueprint("user_bp", __name__, url_prefix="/users")
+
+
+def require_login(user):
+    if "google_uid" in session and session["google_uid"] != user.google_uid:
+        abort(make_response(
+            {"error": "must be logged in to see user details"}, 400))
 
 
 @user_bp.route("/login", methods=["POST"])
@@ -28,6 +34,8 @@ def get_user(id):
     if not user:
         return {"error": "no user with that id"}, 404
 
+    require_login(user)
+
     return {"email": user.email,
             "performance summary": user.summary(),
             "games": user.to_json()["games"]}, 200
@@ -38,6 +46,8 @@ def get_user_by_email(email):
     user = User.query.filter_by(email=email).first()
     if not user:
         return {"error": "no user with that email"}, 404
+
+    require_login(user)
 
     return {"email": user.email,
             "performance summary": user.summary(),
@@ -50,6 +60,6 @@ def get_all_users():
     users = User.query.all()
     user_json = []
     for user in users:
-        user_json.append({"user_id": user.uid, "email": user.email})
+        user_json.append(user.to_json_less_detail())
 
     return jsonify(user_json), 200

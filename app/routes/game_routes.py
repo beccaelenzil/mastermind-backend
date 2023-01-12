@@ -1,10 +1,16 @@
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response, session
 from ..models.game import Game
 from ..models.play import Play
 from app import db
+import os
 
 game_bp = Blueprint("game_bp", __name__, url_prefix="/games")
+
+
+def require_admin_login():
+    if "google_uid" in session and session["google_uid"] != os.environ.get("ADMIN_GOOGLE_UID"):
+        abort(make_response({"error": "most be admin to delete games"}, 400))
 
 
 @game_bp.route("/", methods=["GET"])
@@ -28,6 +34,8 @@ def read_one_game(game_id):
 
 @game_bp.route("/", methods=["DELETE"])
 def delete_all_games():
+    require_admin_login()
+
     # Delete existing
     games = Game.query.all()
     for game in games:
