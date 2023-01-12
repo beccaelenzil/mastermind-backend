@@ -33,6 +33,18 @@ def get_user(id):
             "games": user.to_json()["games"]}, 200
 
 
+@user_bp.route("/email/<email>", methods=["GET"])
+def get_user_by_email(email):
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return {"error": "no user with that email"}, 404
+
+    return {"email": user.email,
+            "performance summary": user.summary(),
+            "games": user.to_json()["games"],
+            "user_id": user.uid}, 200
+
+
 @user_bp.route("/", methods=["GET"])
 def get_all_users():
     users = User.query.all()

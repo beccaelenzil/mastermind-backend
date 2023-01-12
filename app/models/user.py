@@ -57,21 +57,24 @@ class User(db.Model):
             return {"percent": 0, "total": 0, "win": 0}
 
     def make_histogram(self):
+        games = self.sort_games()
         num_plays = []
-        for game in self.games:
-            num_plays.append(len(game.plays))
-        print(len(num_plays))
+        for game in games:
+            if game["plays"] and game["plays"][-1]["win"] == True:
+                num_plays.append(len(game["plays"]))
 
         freq = {}
-        for num in range(0, 11):
-            freq[num] = 0
-
-        for num in num_plays:
-            freq[num] += 1
-
         histogram = {}
-        for num in range(1, max(num_plays)+1):
-            histogram[num] = f"{'x'*freq[num]}"
+
+        if num_plays:
+            for num in range(0, max(num_plays)+1):
+                freq[num] = 0
+
+            for num in num_plays:
+                freq[num] += 1
+
+            for num in range(1, max(num_plays)+1):
+                histogram[num] = f"{'x'*freq[num]}"
 
         sorted_hist = sorted(histogram.items(), key=lambda x: x[1])
         sorted_hist = dict(sorted_hist)
@@ -86,7 +89,7 @@ class User(db.Model):
         }
 
         if (len(self.games)):
-            summary_json["Distribution of number of plays"] = self.make_histogram()[
+            summary_json["Distribution of number of plays for winning games"] = self.make_histogram()[
                 0]
 
         return summary_json
