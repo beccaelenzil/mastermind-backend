@@ -7,7 +7,7 @@ import os
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     code = db.Column(db.String, default="****")
-    level_id = db.Column(db.Integer, db.ForeignKey('level.id'))
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.uid'))
     plays = db.relationship('Play', backref='game', lazy=True)
 
@@ -33,11 +33,13 @@ class Game(db.Model):
 
     def display_code(self):
         level = Level.query.get(self.level_id)
+        if not level:
+            return None
+
         params = level.params()
         max_guesses = params["max_guesses"]
         plays = self.plays
         plays.sort(key=lambda play: play.id)
-        print(len(plays), plays[-1].win)
         if len(plays) == max_guesses or plays[-1].win():
             return self.code
         else:

@@ -53,12 +53,9 @@ def test_read_one_game_not_found(client, game1234):
     assert response.status_code == 404
 
 
-def test_delete_games(client, game1234, play1111):
+def test_delete_games_not_admin(client, game1234, play1111):
     # Act
-    response = client.delete("/games/")
+    response = client.delete("/games/1")
 
     # Assert
-    assert response.status_code == 200
-
-    games = Game.query.all()
-    assert not games
+    assert response.status_code == 400
