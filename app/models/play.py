@@ -1,5 +1,6 @@
 from app import db
 from collections import Counter
+from app.models.level import Level
 
 
 class Play(db.Model):
@@ -14,7 +15,8 @@ class Play(db.Model):
             "game_id": self.game_id,
             "correct_nums": self.correct_nums(),
             "correct_pos": self.correct_pos(),
-            "win": self.win()
+            "win": self.win(),
+            "answer": self.display_answer_code()
         }
 
     def correct_nums(self):
@@ -35,3 +37,12 @@ class Play(db.Model):
 
     def win(self):
         return self.code == self.game.code
+
+    def display_answer_code(self):
+        level = Level.query.get(self.game.level_id)
+        params = level.params()
+        max_guesses = params["max_guesses"]
+        if self.win() or len(self.game.plays) == max_guesses:
+            return self.game.code
+        else:
+            return "hidden"
