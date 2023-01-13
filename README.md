@@ -11,11 +11,11 @@ The Mastermind Web Application that uses this API can be found here: [https://be
 
 ## Running the Server Locally [source](https://github.com/AdaGold/retro-video-store/blob/master/ada-project-docs/setup.md)
 
-1. Fork (optional) and this repo. If you choose to fork the repo, make sure to include all branches.
+1. Fork (optional) and clone this repo. If you choose to fork the repo, make sure to include all branches.
     - Navigate to the repo on your computer
 1. Checkout the `local` branch.
 1. Create and activate a virtual environment
-    -
+    
     ```bash
     $ python3 -m venv venv
     $ source venv/bin/activate
@@ -25,7 +25,7 @@ The Mastermind Web Application that uses this API can be found here: [https://be
     ```bash
     (venv) $ pip install -r requirements.txt
     ```
-1. Setting Up Development and Test Databases
+1. Set up the development and test databases
     - Create two Postgres databases:
         - A development database named `mastermind_development_db`
         - A test database named `mastermind_test_db`
@@ -33,29 +33,34 @@ The Mastermind Web Application that uses this API can be found here: [https://be
     - Create a file named `.env` in the project root directory.
 
         - Create two environment variables that will hold your database URLs.
-        1. `SQLALCHEMY_DATABASE_URI` to hold the path to your development database
-        1. `SQLALCHEMY_TEST_DATABASE_URI` to hold the path to your development database
+
+            - `SQLALCHEMY_DATABASE_URI` to hold the path to your development database
+            - `SQLALCHEMY_TEST_DATABASE_URI` to hold the path to your development database
 
         - Your `.env` may look like this:
 
-        ```
+        ```bash
         SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://postgres:postgres@localhost:5432/mastermind_development_db
 
         SQLALCHEMY_TEST_DATABASE_URI=postgresql+psycopg2://postgres:postgres@localhost:5432/mastermind_test_db
         ```
 
         - Add the following environment variables to use the random API, run the CLI, and create a secret admin key.
-        ```
+        
+        ```bash
         RANDOM_URL=http://www.random.org/integers
         API_URL=http://127.0.0.1:5000/
         SECRET_KEY=*REPLACE WITH RANDOM STRING*
         ```
 
-    - To apply the migrations to your database run the command `flask db upgrade`.
+    - Apply migrations to your database.
+        `flask db upgrade`.
 
-1. Run the server using the command `FLASK_ENV=development flask run`
+1. Run the server.
+    `FLASK_ENV=development flask run`
 
-1. Navigate to `http://127.0.0.1:5000/`. You should see the following response:
+1. Navigate to `http://127.0.0.1:5000/` in the browser. You should see the following response:
+
     ```{"name":"Mastermind API"}```
 
 ## Playing the Game with the Command Line Interface (CLI)
@@ -71,9 +76,9 @@ To play the game with the locally running server, we will use the provided CLI.
 
 ## Playing the Game with the React Web App
 
-The Mastermind Web Application that uses this API can be found here: [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) ([repo](https://github.com/beccaelenzil/mastermind-frontend)).
+The Mastermind Web Application that uses this API can be found here: [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) (https://github.com/beccaelenzil/mastermind-frontend).
 
-You may also choose to clone this react app and run it locally. You first need to run the CLI to make sure that the database is seeded with the levels infomration.
+You may also choose to clone this react app and run it locally. You first need to run the CLI to make sure that the database is seeded with the levels information.
 
 To run the React App with the locally running Flask server, complete the following steps:
 
@@ -87,8 +92,6 @@ To run the React App with the locally running Flask server, complete the followi
 1. Navigate to `http://localhost:3000/` and enjoy the 🦄s, 💚s, and 🥳s ! :)
 
 ## Mastermind API Routes
-
-Below the 
 
 **Plays**
 | Method | URL | Request Body Example | Response Body Example| Description |
@@ -136,3 +139,7 @@ Authentication is not fully implemented. The routes for Google authentication wi
 ### Graphics
 
 The React app [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) translates the number sequence into fun emojis!
+
+## Thank You
+
+I hope you enjoyed this implementation of Mastermind !
