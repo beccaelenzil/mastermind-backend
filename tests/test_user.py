@@ -1,4 +1,6 @@
 from app.models.user import User
+from app.models.game import Game
+import os
 
 
 def test_existing_user(client, user1):
@@ -106,3 +108,16 @@ def test_delete_users_not_admin(client, users2):
 
     # Assert
     assert response.status_code == 400
+
+
+def test_delete_users_admin(client, user_win_2_lose_1):
+    # Act
+    response = client.delete(f"/users/{os.environ.get('SECRET_KEY')}")
+    original_users = User.query.all()
+
+    # Assert
+    assert response.status_code == 200
+    users = User.query.all()
+    assert not users
+    games = Game.query.all()
+    assert not games

@@ -1,5 +1,6 @@
 import pytest
 from app.models.game import Game
+import os
 
 
 def test_root_route(client):
@@ -27,6 +28,17 @@ def test_read_games(client, levels, play1111, play1234, game1234):
     assert not response_body[0]["plays"][0]["win"]
     assert response_body[0]["plays"][1]["code"] == "1234"
     assert response_body[0]["plays"][1]["win"]
+
+
+def test_code_hidden_for_incomplete_game(client, levels, play1111, game1234):
+    # Act
+    response = client.get("/games/")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 1
+    assert response_body[0]["code"] == "hidden"
 
 
 def test_read_one_game(client, levels, play1111, play1234, game1234):
@@ -59,3 +71,13 @@ def test_delete_games_not_admin(client, game1234, play1111):
 
     # Assert
     assert response.status_code == 400
+
+
+def test_delete_games_admin(client, game1234, play1111):
+    # Act
+    response = client.delete(f"/games/{os.environ.get('SECRET_KEY')}")
+
+    # Assert
+    assert response.status_code == 200
+    games = Game.query.all()
+    assert not games

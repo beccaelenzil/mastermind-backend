@@ -1,7 +1,6 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_session import Session
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
@@ -18,22 +17,15 @@ def create_app(test_config=None):
 
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    app.config['SESSION_COOKIE_NAME'] = "session"
     app.config['SECRET_KEY'] = os.environ.get("secretKey")  # <-- random string
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    app.config['SESSION_TYPE'] = 'filesystem'
     app.config['CORS_HEADERS'] = 'Content-Type'
 
-    CORS(app, support_credentials=True, resources={
-         r"/*": {"origins": "*"}}, send_wildcard=True)
-
-    sess = Session()
-    sess.init_app(app)
+    CORS(app)
 
     if test_config is None:
         uri = os.environ.get(
-            "SQLALCHEMY_DATABASE_URI") + "?sslmode=require"
+            "SQLALCHEMY_DATABASE_URI")  # + "?sslmode=require"
         if uri.startswith("postgres://"):
             uri = uri.replace("postgres://", "postgresql://", 1)
         app.config["SQLALCHEMY_DATABASE_URI"] = uri
@@ -52,7 +44,7 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
 
     # Register Blueprints here
-    from .routes.login_routes import root_bp
+    from .routes.routes import root_bp
     from .routes.game_routes import game_bp
     from .routes.user_routes import user_bp
     from .routes.play_routes import play_bp

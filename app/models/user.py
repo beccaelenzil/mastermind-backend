@@ -2,11 +2,6 @@ from app import db
 from app.models.game import Game
 
 
-def get_user(google_uid):
-    user = User.query.filter_by(google_uid=google_uid).first()
-    return user
-
-
 class User(db.Model):
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     google_uid = db.Column(db.String)
