@@ -12,10 +12,9 @@ class User(db.Model):
     def to_json(self):
         return {
             "uid": self.uid,
-            "name": self.name,
-            "email": self.email,
-            "google_uid": self.google_uid,
-            "games": [game.to_json() for game in self.games]
+            "username": self.email,
+            "games": [game.to_json() for game in self.games],
+            "performance summary": self.summary()
         }
 
     def to_json_less_detail(self):
@@ -25,7 +24,7 @@ class User(db.Model):
         }
 
     def sort_games(self):
-        games = self.to_json()["games"]
+        games = [game.to_json() for game in self.games]
         games.sort(key=lambda game: game["id"])
         for game in games:
             game["plays"].sort(key=lambda play: play["id"])

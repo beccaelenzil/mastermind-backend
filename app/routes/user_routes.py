@@ -41,8 +41,7 @@ def login():
 def get_user_route(id):
     user = get_user(id)
 
-    return {"performance summary": user.summary(),
-            "games": user.to_json()["games"]}, 200
+    return user.to_json(), 200
 
 
 @user_bp.route("/", methods=["GET"])
