@@ -8,11 +8,6 @@ import os
 game_bp = Blueprint("game_bp", __name__, url_prefix="/games")
 
 
-def require_admin_login():
-    if "google_uid" in session and session["google_uid"] != os.environ.get("ADMIN_GOOGLE_UID"):
-        abort(make_response({"error": "most be admin to delete games"}, 400))
-
-
 @game_bp.route("/", methods=["GET"])
 def read_game():
     games = Game.query.all()
@@ -25,10 +20,6 @@ def read_game():
 
 @game_bp.route("/<game_id>", methods=["GET"])
 def read_one_game(game_id):
-    # addition for front end - TODO: remove once frontend refactored
-    if game_id == "0":
-        return {"message": "initial render"}, 202
-
     game = Game.query.get(game_id)
     if not game:
         return {"error": "No game with that game_id"}, 404
@@ -36,10 +27,10 @@ def read_one_game(game_id):
     return game.to_json(), 200
 
 
-@game_bp.route("/", methods=["DELETE"])
-def delete_all_games():
-    require_admin_login()
-
+@game_bp.route("/<admin_id>", methods=["DELETE"])
+def delete_all_games(admin_id):
+    if admin_id != os.environ.get("SECRET_KEY"):
+        return {"error": "must be admin to delete games"}, 400
     # Delete existing
     games = Game.query.all()
     for game in games:

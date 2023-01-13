@@ -25,16 +25,11 @@ while play == "Y":
         response_body = response.json()
         guesses.append([guess, response_body["correct_nums"],
                        response_body["correct_pos"]])
+        code = response_body["answer"]
 
         # get game info on first play
         if not game_id:
             game_id = response_body["game_id"]
-            game_response = requests.get(
-                f'{url}games/{game_id}')
-            game_response_body = game_response.json()
-            code = game_response_body["code"]
-
-        # print play info
         print_play_info(guesses)
 
         turn += 1

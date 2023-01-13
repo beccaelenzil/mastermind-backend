@@ -14,7 +14,7 @@ class Game(db.Model):
     def to_json(self):
         return {
             "id": self.id,
-            "code": self.code,
+            "code": self.display_code(),
             "user_id": self.user_id,
             "level_params": self.get_level().params() if self.get_level() else None,
             "level": self.get_level().name if self.get_level() else None,
@@ -30,3 +30,15 @@ class Game(db.Model):
             "RANDOM_URL"), params=level.params())
         code = response.text.replace('\n', '')
         return code
+
+    def display_code(self):
+        level = Level.query.get(self.level_id)
+        params = level.params()
+        max_guesses = params["max_guesses"]
+        plays = self.plays
+        plays.sort(key=lambda play: play.id)
+        print(len(plays), plays[-1].win)
+        if len(plays) == max_guesses or plays[-1].win():
+            return self.code
+        else:
+            return "hidden"
