@@ -11,7 +11,7 @@ class User(db.Model):
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     google_uid = db.Column(db.String)
     name = db.Column(db.String)
-    email = db.Column(db.String)
+    email = db.Column(db.String, nullable=False)
     games = db.relationship('Game', backref='user', lazy=True)
 
     def to_json(self):

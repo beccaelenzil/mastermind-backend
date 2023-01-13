@@ -18,7 +18,7 @@ LEVELS = {
 
 class Level(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, default="standard")
+    name = db.Column(db.String, default="standard", nullable=False)
     games = db.relationship('Game', backref='level', lazy=True)
 
     def params(self):
