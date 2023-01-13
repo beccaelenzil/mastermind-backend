@@ -27,12 +27,12 @@ def create_app(test_config=None):
 
     sess = Session()
     sess.init_app(app)
-    CORS(app)  # , support_credentials=True, resources={
-# r"/*": {"origins": "*"}}, send_wildcard=True)
+    CORS(app, support_credentials=True, resources={
+         r"/*": {"origins": "*"}}, send_wildcard=True)
 
     if test_config is None:
         uri = os.environ.get(
-            "SQLALCHEMY_DATABASE_URI")  # + "?sslmode=require"
+            "SQLALCHEMY_DATABASE_URI") + "?sslmode=require"
         if uri.startswith("postgres://"):
             uri = uri.replace("postgres://", "postgresql://", 1)
         app.config["SQLALCHEMY_DATABASE_URI"] = uri
