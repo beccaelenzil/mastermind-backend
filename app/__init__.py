@@ -25,10 +25,11 @@ def create_app(test_config=None):
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['CORS_HEADERS'] = 'Content-Type'
 
-    sess = Session()
-    sess.init_app(app)
     CORS(app, support_credentials=True, resources={
          r"/*": {"origins": "*"}}, send_wildcard=True)
+
+    sess = Session()
+    sess.init_app(app)
 
     if test_config is None:
         uri = os.environ.get(
