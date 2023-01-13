@@ -90,44 +90,49 @@ To run the React App with the locally running Flask server, complete the followi
 
 Below the 
 
+**Plays**
+| Method | URL | Request Body Example | Response Body Example| Description |
+|--|--|--|--|--|
+| `POST` |`/plays` |`{game_id: 1, "level": "easy", "user_id": 1}` | | |
+
 **Games**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| | | | | |
-
-**Plays**
-| Method | URL | Request Body | Response Body | Description |
-|--|--|--|--|--|
-| | | | | |
+| `GET`| `/games`| | | |
+| `GET`| `/games/1`| | | |
+| `DELETE`| `/games`| | | |
+| `DELETE`| `/games/1`| | | |
 
 **Users**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| | | | | |
+|--|--|--|--|--|
+| `GET`| `/users/login`|`{"email": "becca"}` | | |
+| `GET`| `/users`| | | |
+| `GET`| `/users/1`| | | |
+| `DELETE`| `/users`| | | |
+| `DELETE`| `/users/1`| | | |
 
 **Levels**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| | | | | |
-
+| `POST`| `/levels`| | | |
+| `GET`| `/levels`| | | |
+| `GET`| `/levels/1`| | | |
 
 ## Enhancements
 
 ### Levels
+Playes can play in easy (code length: 4, digit options: 4), standard (code length: 4, digit options: 8), or hard (code length: 6, digit options: 8) mode. These level parameters are hardcoded in the `level.py` model file. 
 
-- Add a configurable “difficulty level” and adjust the number of numbers that are used
-- Draw all of graphical components, add animations and sounds
-- Change numbers into colored pegs, shapes, animals, etc
-- Keep track of scores
-- Add a timer for the entire game, or each guess attempts
-- Anything else that you come up with to make the game more fun/interesting!
+A future enhancement would add configurability to the level parameters. This could be achieved through additional routes that allow users to update the level paramters.
 
-Submission
-Please make sure your project contains a README.md. This README should explain how an
-interviewer could run your code, document your thought process and/or code structure, and
-describe any creative extensions attempted or implemented. There is no prescribed format for
-the README, but it should be clear and unambiguous in listing all the steps in building, running,
-and playing the game you built (you should make no assumptions about what software the
-interviewer has, and err on the side of being explicit). Your interviewers will be engineers, so you
-can assume a certain level of technical ability as relates to installing what your project requires.
-Please create a new public repository in Github and
+### Users
+
+Players can choose to login and track their progress. A performance summary provides total number of games played, number of games won, the most recent number of games won in a row (win streak), the win percentage, and the distribution of the number of plays used on winning games.
+
+Authentication is not fully implemented. The routes for Google authentication with oauth can be viewed in the `login_routes.py` on the `google-auth` branch.
+
+### Graphics
+
+The React app [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) translates the number sequence into fun emojis!
