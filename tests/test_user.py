@@ -98,3 +98,11 @@ def test_user_no_games(client, users2):
     assert summary["Total games"] == 0
     assert summary["Win %"] == 0
     assert len(response_body["games"]) == 0
+
+
+def test_delete_users_not_admin(client, users2):
+    # Act
+    response = client.delete("/users/1")
+
+    # Assert
+    assert response.status_code == 400

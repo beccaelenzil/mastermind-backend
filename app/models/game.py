@@ -40,7 +40,6 @@ class Game(db.Model):
         max_guesses = params["max_guesses"]
         plays = self.plays
         plays.sort(key=lambda play: play.id)
-        print(len(plays), plays[-1].win)
         if len(plays) == max_guesses or plays[-1].win():
             return self.code
         else:

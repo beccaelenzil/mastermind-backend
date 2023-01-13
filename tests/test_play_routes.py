@@ -123,7 +123,6 @@ def test_invalid_XXXX(client, game1234):
 
     response = client.post(
         "/plays/", json={"code": "XXXX", "game_id": game_id})
-    print(response.get_json())
 
     assert response.status_code == 400
 

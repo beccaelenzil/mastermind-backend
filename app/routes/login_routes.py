@@ -34,7 +34,6 @@ def root():
 @root_bp.route("/current", methods=["GET"])
 def index():
     current_user = None
-    print("session", session)
     if "uid" in session:
         current_user = User.query.get(session["uid"])
 
@@ -113,13 +112,7 @@ def callback():
     session["google_uid"] = user.google_uid
     session["uid"] = user.uid
 
-    # response = make_response(user.to_json(), response_code)
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    # print("session", session)
-    # return response
-
     return redirect(url_for("root_bp.index"))
-    # return redirect(f"http://localhost:3000/{user.uid}")
 
 
 @root_bp.route("/logout")
