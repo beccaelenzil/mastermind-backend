@@ -7,7 +7,7 @@ import os
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     code = db.Column(db.String, default="****")
-    level_id = db.Column(db.Integer, db.ForeignKey('level.id'))
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.uid'))
     plays = db.relationship('Play', backref='game', lazy=True)
 
