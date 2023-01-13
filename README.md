@@ -126,7 +126,7 @@ To run the React App with the locally running Flask server, complete the followi
 ## Enhancements
 
 ### Levels
-Playes can play in easy (code length: 4, digit options: 4), standard (code length: 4, digit options: 8), or hard (code length: 6, digit options: 8) mode. These level parameters are hardcoded in the `level.py` model file. 
+Players can play in easy (code length: 4, digit options: 4), standard (code length: 4, digit options: 8), or hard (code length: 6, digit options: 8) mode. These level parameters are hardcoded in the `level.py` model file. 
 
 A future enhancement would add configurability to the level parameters. This could be achieved through additional routes that allow users to update the level paramters.
 
