@@ -111,9 +111,30 @@ def test_1234_1234(client, game1234, play1111, levels):
     assert response_body["correct_nums"] == 4
     assert response_body["correct_pos"] == 4
     assert response_body["win"]
+    assert response_body["answer"] == "1234"
 
     play = Play.query.get(2)
     assert play.code == "1234"
+
+
+def test_answer_hidden_for_wrong_guess(client, game1234, play1111, levels):
+    # Arrange
+    game = Game.query.first()
+    game_id = game.id
+
+    # Act
+    response = client.post(
+        "/plays/", json={"code": "1111", "game_id": game_id})
+    assert response.status_code == 201
+
+    response_body = response.get_json()
+    # Assert
+    assert response_body["game_id"] == game_id
+    assert not response_body["win"]
+    assert response_body["answer"] == "hidden"
+
+    play = Play.query.get(2)
+    assert play.code == "1111"
 
 
 def test_invalid_XXXX(client, game1234):
