@@ -11,6 +11,11 @@ url = os.environ.get("API_URL")
 
 def get_level_info():
     response = requests.get(url+"levels/")
+    # if levels response is empty
+    if not response.json():
+        # seed database with levels
+        post_response = requests.post(url+"levels/")
+        response = requests.get(url+"levels/")
     level_info = response.json()
     return level_info
 
@@ -69,6 +74,10 @@ def get_and_print_level():
     print_stars()
     MAX_TRIES = generate_code(level)['max_tries']
     print(f"You have {MAX_TRIES} to guess the sequence!")
+    print_stars()
+    print("After you enter a guess sequence, the computer will show you two numbers.")
+    print("The first number is the amount of correct numbers.")
+    print("The second number is the amount of correct numbers in the correct position.")
     print_stars()
     return [level, MAX_TRIES]
 
