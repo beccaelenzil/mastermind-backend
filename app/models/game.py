@@ -33,9 +33,6 @@ class Game(db.Model):
 
     def display_code(self):
         level = Level.query.get(self.level_id)
-        if not level:
-            return None
-
         params = level.params()
         max_guesses = params["max_guesses"]
         plays = self.plays
