@@ -109,7 +109,6 @@ To run the React App with the locally running Flask server, complete the followi
 **Users**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-|--|--|--|--|--|
 | `GET`| `/users/login`|`{"email": "becca"}` | | |
 | `GET`| `/users`| | | |
 | `GET`| `/users/1`| | | |
