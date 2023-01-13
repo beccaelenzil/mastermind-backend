@@ -40,6 +40,8 @@ class Play(db.Model):
 
     def display_answer_code(self):
         level = Level.query.get(self.game.level_id)
+        if not level:
+            return None
         params = level.params()
         max_guesses = params["max_guesses"]
         if self.win() or len(self.game.plays) == max_guesses:
