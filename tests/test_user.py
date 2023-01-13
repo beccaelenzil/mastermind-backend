@@ -104,16 +104,22 @@ def test_user_no_games(client, users2):
 
 def test_delete_users_not_admin(client, users2):
     # Act
-    response = client.delete("/users/1")
+    response = client.delete(
+        "/users/", json={"admin_key": 1})
 
     # Assert
     assert response.status_code == 400
 
 
 def test_delete_users_admin(client, user_win_2_lose_1):
+
     # Act
-    response = client.delete(f"/users/{os.environ.get('SECRET_KEY')}")
-    original_users = User.query.all()
+    response = client.delete(
+        f"/users/", json={"admin_key": os.environ.get('SECRET_KEY')})
+
+    response.status_code == 200
+    response_body = response.get_json()
+    print(response_body)
 
     # Assert
     assert response.status_code == 200
@@ -121,3 +127,25 @@ def test_delete_users_admin(client, user_win_2_lose_1):
     assert not users
     games = Game.query.all()
     assert not games
+
+
+def test_delete_1_user_admin(client, user_win_2_lose_1):
+    # Act
+    response = client.delete(
+        "/users/1", json={"admin_key": os.environ.get('SECRET_KEY')})
+
+    # Assert
+    assert response.status_code == 200
+    users = User.query.all()
+    assert not users
+    games = Game.query.all()
+    assert not games
+
+
+def test_delete_1_user_not_admin(client, user_win_2_lose_1):
+    # Act
+    response = client.delete(
+        "/users/1")
+
+    # Assert
+    assert response.status_code == 400

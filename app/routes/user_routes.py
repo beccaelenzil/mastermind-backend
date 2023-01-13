@@ -8,6 +8,19 @@ import os
 user_bp = Blueprint("user_bp", __name__, url_prefix="/users")
 
 
+def get_user(id):
+    user = User.query.get(id)
+    if not user:
+        abort(make_response({"error": "no user with that id"}, 404))
+
+    return user
+
+
+def require_admin(request_body):
+    if "admin_key" not in request_body or request_body["admin_key"] != os.environ.get("SECRET_KEY"):
+        abort(make_response({"error": "must be admin to delete users"}, 400))
+
+
 @user_bp.route("/login", methods=["POST"])
 def login():
     request_body = request.get_json()
@@ -25,10 +38,8 @@ def login():
 
 
 @user_bp.route("/<id>", methods=["GET"])
-def get_user(id):
-    user = User.query.get(id)
-    if not user:
-        return {"error": "no user with that id"}, 404
+def get_user_route(id):
+    user = get_user(id)
 
     return {"performance summary": user.summary(),
             "games": user.to_json()["games"]}, 200
@@ -44,11 +55,11 @@ def get_all_users():
     return jsonify(user_json), 200
 
 
-@user_bp.route("/<admin_id>", methods=["DELETE"])
-def delete_all_users(admin_id):
-    if admin_id != os.environ.get("SECRET_KEY"):
-        return {"error": "must be admin to delete users"}, 400
-    # Delete existing
+@user_bp.route("/", methods=["DELETE"])
+def delete_all_users():
+    request_body = request.get_json()
+    require_admin(request_body)
+
     users = User.query.all()
     for user in users:
         games = Game.query.filter_by(user_id=user.uid)
@@ -58,3 +69,19 @@ def delete_all_users(admin_id):
         db.session.commit()
 
     return {"success": "delete all users"}, 200
+
+
+@user_bp.route("/<id>", methods=["DELETE"])
+def delete_one_user(id):
+    request_body = request.get_json()
+    require_admin(request_body)
+
+    user = get_user(id)
+
+    games = Game.query.filter_by(user_id=user.uid)
+    for game in games:
+        db.session.delete(game)
+    db.session.delete(user)
+    db.session.commit()
+
+    return {"success": f"deleted user {id}"}, 200

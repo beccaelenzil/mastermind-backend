@@ -1,5 +1,6 @@
 import pytest
 from app.models.game import Game
+from app.models.play import Play
 import os
 
 
@@ -67,7 +68,7 @@ def test_read_one_game_not_found(client, game1234):
 
 def test_delete_games_not_admin(client, game1234, play1111):
     # Act
-    response = client.delete("/games/1")
+    response = client.delete("/games/1", json={"admin_key": 1})
 
     # Assert
     assert response.status_code == 400
@@ -75,9 +76,23 @@ def test_delete_games_not_admin(client, game1234, play1111):
 
 def test_delete_games_admin(client, game1234, play1111):
     # Act
-    response = client.delete(f"/games/{os.environ.get('SECRET_KEY')}")
+    response = client.delete(
+        "/games/", json={"admin_key": os.environ.get('SECRET_KEY')})
 
     # Assert
     assert response.status_code == 200
     games = Game.query.all()
     assert not games
+
+
+def test_delete_1_game_admin(client, game1234, play1111):
+    # Act
+    response = client.delete(
+        "/games/1", json={"admin_key": os.environ.get('SECRET_KEY')})
+
+    # Assert
+    assert response.status_code == 200
+    games = Game.query.all()
+    assert not games
+    plays = Play.query.all()
+    assert not plays

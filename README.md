@@ -73,3 +73,5 @@ $ FLASK_ENV=development flask run
 
 **It is highly recommended to run the Flask servers with this command**.
 
+
+`pytest --cov=app --cov-report html --cov-report term`
