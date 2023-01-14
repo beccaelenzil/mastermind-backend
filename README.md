@@ -96,24 +96,25 @@ To run the React App with the locally running Flask server, complete the followi
 **Plays**
 | Method | URL | Request Body Example | Response Body Example| Description |
 |--|--|--|--|--|
-| `POST` |`/plays` |`{game_id: 1, "level": "easy", "user_id": 1}` | | |
+| `POST` |`/plays` |`{"game_id": null, "user_id": 1, "level": "easy", "code": "1111"}` |`{ "answer": "hidden", "code": "1111", "correct_nums": 0,"correct_pos": 0,"game_id": 1,"id": 1, "win": false}` | The first play of a game creates a new game. The id for that new game is returned in the response body. The answer is hidden until the player wins or runs out of tries. |
+| `POST` |`/plays` |`{"game_id": 1, "user_id": 1, "level": "easy", "code": "1234"}` |`{ "answer": "1234", "code": "1234", "correct_nums": 4,"correct_pos": 4,"game_id": 1,"id": 2, "win": true}` | This example second play of a game is a winning play. |
 
 **Games**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| `GET`| `/games`| | | |
-| `GET`| `/games/1`| | | |
-| `DELETE`| `/games`| | | |
-| `DELETE`| `/games/1`| | | |
+| `GET`| `/games/1`|`-`|`{"code": "hidden","id": 1, "level": "easy","level_params": {...},"plays": [{},...],"user_id": null}` | Details about the game with `id` one are returned in the response body. The code is hidden until the game is won or the max number of guesses are used.|
+| `GET`| `/games`|`-` |`[List of game dictionaries]` | Details about all the games in the database are returned as a list of dictionaries |
+| `DELETE`| `/games/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete games"}, 400`  `{"success": f"delete game 1"}, 200` |Deletes one game with id 1 and associated plays. The secret key is stored in the environment variables. |
+| `DELETE`| `/games`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete games"}, 400` or `{"success": "delete all games"}, 200`|Deletes all games and associated plays. The secret key is stored in the environment variables. |
 
 **Users**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| `GET`| `/users/login`|`{"email": "becca"}` | | |
+| `POST`| `/users/login`|`{"email": "becca"}` | | |
 | `GET`| `/users`| | | |
 | `GET`| `/users/1`| | | |
-| `DELETE`| `/users`| | | |
-| `DELETE`| `/users/1`| | | |
+| `DELETE`| `/users/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete users"}, 400`  `{"success": f"delete user 1"}, 200` |Deletes one user with id 1 and associated games. The secret key is stored in the environment variables. |
+| `DELETE`| `/users`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete users"}, 400` or `{"success": "delete all users"}, 200`|Deletes all users and associated games. The secret key is stored in the environment variables. |
 
 **Levels**
 | Method | URL | Request Body | Response Body | Description |
