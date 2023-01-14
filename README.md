@@ -93,6 +93,8 @@ To run the React App with the locally running Flask server, complete the followi
 
 ## Mastermind API Routes
 
+Below find a high level summary of the endpoints provided by the Mastermind API.
+
 **Plays**
 | Method | URL | Request Body Example | Response Body Example| Description |
 |--|--|--|--|--|
