@@ -121,7 +121,7 @@ Below find a high level summary of the endpoints provided by the Mastermind API.
 **Levels**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| `POST`| `/levels`|`-` | |This POST request seeds the database with the level parameters coded in the `levels.py` file. |
+| `POST`| `/levels`|`-` |`{"easy":{params}, "standard":{params}, "hard":{params}}` |This POST request seeds the database with the level parameters coded in the `levels.py` file. |
 | `GET`| `/levels`|`-`|`{"easy":{params}, "standard":{params}, "hard":{params}}` |The parameters for all levels are returned. |
 | `GET`| `/levels/1`|`-` |`{"name": "easy", "params": {...}` |The parameters for one level with id 1 is returned. |
 
