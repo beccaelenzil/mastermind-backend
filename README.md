@@ -148,7 +148,12 @@ A future enhancement would add configurability to the level parameters. This cou
 
 Players can choose to login and track their progress. A performance summary provides total number of games played, number of games won, the most recent number of games won in a row (win streak), the win percentage, and the distribution of the number of plays used on winning games.
 
-Authentication is not fully implemented. The routes for Google authentication with oauth can be viewed in the `login_routes.py` on the `google-auth` branch.
+Authentication is not implemented. You can log in with any username you like! You can log in as your friend and go on a winning streak on their behalf (or a losing streak, for that matter). But remember to play nice, or an admin might delete you ;)
+
+**`username` vs. `email`.** 
+`email` is the attribute stored in the `User` table, but the CLI and React App use the term `username` since it is not required that you use a valid email address. `email` was chosen as the attribute with Google authentication in mind.
+
+While authentication is not implemented, the routes for Google authentication with oauth can be viewed in the `login_routes.py` on the `google-auth` branch.
 
 ### Graphics
 
