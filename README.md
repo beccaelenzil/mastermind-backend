@@ -1,4 +1,4 @@
-# Mastermind Backend
+# Mastermind API
 
 This repo has the source code for the Mastermind API, created for the LinkedIn Reach Software Engineering Apprenticeship Application. The API is written in Python using the Flask framework.
 
