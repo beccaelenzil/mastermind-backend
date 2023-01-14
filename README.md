@@ -110,18 +110,18 @@ To run the React App with the locally running Flask server, complete the followi
 **Users**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| `POST`| `/users/login`|`{"email": "becca"}` | | |
-| `GET`| `/users`| | | |
-| `GET`| `/users/1`| | | |
-| `DELETE`| `/users/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete users"}, 400`  `{"success": f"delete user 1"}, 200` |Deletes one user with id 1 and associated games. The secret key is stored in the environment variables. |
+| `POST`| `/users/login`|`{"email": "becca"}` |`{}` | If there is not a user with the email passed in the request body, a new user is created. The request returns details about the logged in user. |
+| `GET`| `/users`|`-`|`[{"num games": 11,"uid": 1},...]`| Abbreviated details about all users are returned.|
+| `GET`| `/users/1`|`-`|`{games: [{game details},...], "performance summary": {}, "uid": 1, "username": "becca"`| Details for the user with uid 1 are returned. Details include all the games play and a summary of performance. The performance summary includes guess distribution, games won, total games, win percentage, and current win streak. |
+| `DELETE`| `/users/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete users"}, 400`  `{"success": f"delete user 1"}, 200` |Deletes one user with uid 1 and associated games. The secret key is stored in the environment variables. |
 | `DELETE`| `/users`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete users"}, 400` or `{"success": "delete all users"}, 200`|Deletes all users and associated games. The secret key is stored in the environment variables. |
 
 **Levels**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
 | `POST`| `/levels`| | | |
-| `GET`| `/levels`| | | |
-| `GET`| `/levels/1`| | | |
+| `GET`| `/levels`|`-`| | |
+| `GET`| `/levels/1`|`-` | | |
 
 ## Enhancements
 
