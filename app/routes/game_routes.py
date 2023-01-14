@@ -18,7 +18,7 @@ def get_game(id):
 
 def require_admin(request_body):
     if "admin_key" not in request_body or request_body["admin_key"] != os.environ.get("SECRET_KEY"):
-        abort(make_response({"error": "must be admin to delete users"}, 400))
+        abort(make_response({"error": "must be admin to delete games"}, 400))
 
 
 @game_bp.route("/", methods=["GET"])

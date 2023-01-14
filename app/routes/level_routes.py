@@ -29,9 +29,8 @@ def read_one_level(level_id):
 def create_levels():
     # Delete existing
     levels = Level.query.all()
-    for level in levels:
-        db.session.delete(level)
-        db.session.commit()
+    if levels:
+        return {"message": "There are already levels in the database"}, 200
 
     level_names = ["easy", "standard", "hard"]
     levels_json = []
