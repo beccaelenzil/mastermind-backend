@@ -125,6 +125,18 @@ Below find a high level summary of the endpoints provided by the Mastermind API.
 | `GET`| `/levels`|`-`|`{"easy":{params}, "standard":{params}, "hard":{params}}` |The parameters for all levels are returned. |
 | `GET`| `/levels/1`|`-` |`{"name": "easy", "params": {...}` |The parameters for one level with id 1 is returned. |
 
+## Testing
+
+Comprehensive unit tests can be run with the command `pytest`.
+
+A code coverage report was created with the following command:
+
+```bash
+pytest --cov=app --cov-report html --cov-report term
+```
+
+The coverage report is available in `htmlcov/index.html`.
+
 ## Enhancements
 
 ### Levels
