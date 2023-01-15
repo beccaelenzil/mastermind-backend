@@ -2,11 +2,14 @@
 
 This repo has the source code for the Mastermind API, created for the LinkedIn Reach Software Engineering Apprenticeship Application. The API is written in Python using the Flask framework.
 
-## Web App
+To play the game, go to https://beccaelenzil.github.io/mastermind-frontend/
 
-The Mastermind API is deployed here: [https://becca-mastermind.herokuapp.com/](https://becca-mastermind.herokuapp.com/). 
+## Deployment
 
-The Mastermind Web Application that uses this API can be found here: [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) ([repo](https://github.com/beccaelenzil/mastermind-frontend)).
+The Mastermind API is deployed here: https://becca-mastermind.herokuapp.com/. 
+
+The Mastermind Web Application (the game!) that uses this API is deployed here: https://beccaelenzil.github.io/mastermind-frontend/ 
+- The repo for the front-end can be found here: https://github.com/beccaelenzil/mastermind-frontend.
 
 
 ## Running the Server Locally [source](https://github.com/AdaGold/retro-video-store/blob/master/ada-project-docs/setup.md)
@@ -25,6 +28,9 @@ The Mastermind Web Application that uses this API can be found here: [https://be
     ```bash
     (venv) $ pip install -r requirements.txt
     ```
+
+    Future instructions will show `(venv) $` in front of terminal commands as a reminder that commands should be run in the terminal with an activated `venv`. 
+
 1. Set up the development and test databases
     - Create two Postgres databases:
         - A development database named `mastermind_development_db`
@@ -54,9 +60,11 @@ The Mastermind Web Application that uses this API can be found here: [https://be
         ```
 
     - Apply migrations to your database.
-        `flask db upgrade`.
+        
+        `(venv) $ flask db upgrade`
 
 1. Run the server.
+    
     `FLASK_ENV=development flask run`
 
 1. Navigate to `http://127.0.0.1:5000/` in the browser. You should see the following response:
@@ -67,7 +75,9 @@ The Mastermind Web Application that uses this API can be found here: [https://be
 
 To play the game with the locally running server, we will use the provided CLI.
 
-1. Run the CLI with the command `python3 cli/main.py`.
+1. Run the CLI with the command `(venv) $ python3 cli/main.py`.
+
+1. You may also play using the CLI and the deployed API here: [https://replit.com/@BeccaElenzil/mastermind-cli](https://replit.com/@BeccaElenzil/mastermind-cli)
 
 1. Below is an example game run for a new logged-in user `becca`.
 
@@ -76,7 +86,7 @@ To play the game with the locally running server, we will use the provided CLI.
 
 ## Playing the Game with the React Web App
 
-The Mastermind Web Application that uses this API can be found here: [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) (https://github.com/beccaelenzil/mastermind-frontend).
+The Mastermind Web Application that uses this API can be found here: https://beccaelenzil.github.io/mastermind-frontend/.
 
 You may also choose to clone this react app and run it locally. You first need to run the CLI to make sure that the database is seeded with the level information.
 
@@ -91,48 +101,14 @@ To run the React App with the locally running Flask server, complete the followi
     ```
 1. Navigate to `http://localhost:3000/` and enjoy the 🦄s, 💚s, and 🥳s! :)
 
-## Mastermind API Routes
-
-Below, find a high-level summary of the endpoints provided by the Mastermind API.
-
-**Plays**
-| Method | URL | Request Body Example | Response Body Example| Description |
-|--|--|--|--|--|
-| `POST` |`/plays` |`{"game_id": null, "user_id": 1, "level": "easy", "code": "1111"}` |`{ "answer": "hidden", "code": "1111", "correct_nums": 0,"correct_pos": 0,"game_id": 1,"id": 1, "win": false}` | The first play of a game creates a new game. The id for that new game is returned in the response body. The answer is hidden until the player wins or runs out of tries. |
-| `POST` |`/plays` |`{"game_id": 1, "user_id": 1, "level": "easy", "code": "1234"}` |`{ "answer": "1234", "code": "1234", "correct_nums": 4,"correct_pos": 4,"game_id": 1,"id": 2, "win": true}` | This example second play of a game is a winning play. |
-
-**Games**
-| Method | URL | Request Body | Response Body | Description |
-|--|--|--|--|--|
-| `GET`| `/games/1`|`-`|`{"code": "hidden","id": 1, "level": "easy","level_params": {...},"plays": [{},...],"user_id": null}` | Details about the game with `id` one are returned in the response body. The code is hidden until the game is won or the max number of guesses is used.|
-| `GET`| `/games`|`-` |`[List of game dictionaries]` | Details about all the games in the database are returned as a list of dictionaries |
-| `DELETE`| `/games/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete games"}, 400`  `{"success": f"delete game 1"}, 200` |Deletes one game with id 1 and associated plays. The secret key is stored in the environment variables. |
-| `DELETE`| `/games`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete games"}, 400` or `{"success": "delete all games"}, 200`|Deletes all games and associated plays. The secret key is stored in the environment variables. |
-
-**Users**
-| Method | URL | Request Body | Response Body | Description |
-|--|--|--|--|--|
-| `POST`| `/users/login`|`{"email": "becca"}` |`{}` | If there is not a user with the email passed in the request body, a new user is created. The request returns details about the logged in user. |
-| `GET`| `/users`|`-`|`[{"num games": 11,"uid": 1},...]`| Abbreviated details about all users are returned.|
-| `GET`| `/users/1`|`-`|`{games: [{game details},...], "performance summary": {}, "uid": 1, "username": "becca"`| Details for the user with uid 1 are returned. Details include all the games play and a summary of performance. The performance summary includes guess distribution, games won, total games, win percentage, and current win streak. |
-| `DELETE`| `/users/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete users"}, 400`  `{"success": f"delete user 1"}, 200` |Deletes one user with uid 1 and associated games. The secret key is stored in the environment variables. |
-| `DELETE`| `/users`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete users"}, 400` or `{"success": "delete all users"}, 200`|Deletes all users and associated games. The secret key is stored in the environment variables. |
-
-**Levels**
-| Method | URL | Request Body | Response Body | Description |
-|--|--|--|--|--|
-| `POST`| `/levels`|`-` |`{"easy":{params}, "standard":{params}, "hard":{params}}` |This POST request seeds the database with the level parameters coded in the `levels.py` file. |
-| `GET`| `/levels`|`-`|`{"easy":{params}, "standard":{params}, "hard":{params}}` |The parameters for all levels are returned. |
-| `GET`| `/levels/1`|`-` |`{"name": "easy", "params": {...}` |The parameters for one level with id 1 are returned. |
-
 ## Testing
 
-Comprehensive unit tests can be run with the command `pytest`.
+Comprehensive unit tests can be run with the command `(venv) $ pytest`.
 
 A code coverage report was created with the following command:
 
 ```bash
-pytest --cov=app --cov-report html --cov-report term
+(venv) $ pytest --cov=app --cov-report html --cov-report term
 ```
 
 The coverage report is available in `htmlcov/index.html`.
@@ -158,6 +134,40 @@ While authentication is not implemented, the routes for Google authentication wi
 ### Graphics
 
 The React app [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) translates the number sequence into fun emojis!
+
+## Mastermind API Routes
+
+Below, find a high-level summary of the endpoints provided by the Mastermind API.
+
+**Plays**
+| Method | URL | Request Body Example | Response Body Example| Description |
+|--|--|--|--|--|
+| `POST` |`/plays` |`{"game_id": null, "user_id": 1, "level": "easy", "code": "1111"}` |`{ "answer": "hidden", "code": "1111", "correct_nums": 0,"correct_pos": 0,"game_id": 1,"id": 1, "win": false}` | The first play of a game creates a new game. The id for that new game is returned in the response body. The answer is hidden until the player wins or runs out of tries. |
+| `POST` |`/plays` |`{"game_id": 1, "user_id": 1, "level": "easy", "code": "1234"}` |`{ "answer": "1234", "code": "1234", "correct_nums": 4,"correct_pos": 4,"game_id": 1,"id": 2, "win": true}` | This example second play of a game is a winning play. |
+
+**Games**
+| Method | URL | Request Body | Response Body | Description |
+|--|--|--|--|--|
+| `GET`| `/games/1`|`-`|`{"code": "hidden","id": 1, "level": "easy","level_params": {...},"plays": [{},...],"user_id": null}` | Returns details about the game with `id` `1`. The code is hidden until the game is won or the max number of guesses is used.|
+| `GET`| `/games`|`-` |`[List of game dictionaries]` | Returns details about all the games in the database as a list of dictionaries. |
+| `DELETE`| `/games/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete games"}, 400`  `{"success": f"delete game 1"}, 200` |Deletes one game with `id` `1` and associated plays. The secret key is stored in the environment variables. |
+| `DELETE`| `/games`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete games"}, 400` or `{"success": "delete all games"}, 200`|Deletes all games and associated plays. The secret key is stored in the environment variables. |
+
+**Users**
+| Method | URL | Request Body | Response Body | Description |
+|--|--|--|--|--|
+| `POST`| `/users/login`|`{"email": "becca"}` |`{}` | If there is not a user with the email passed in the request body, a new user is created. The request returns details about the logged-in user. |
+| `GET`| `/users`|`-`|`[{"num games": 11,"uid": 1, "username": "becca", "wins": 1},...]`| Returns abbreviated details about all users.|
+| `GET`| `/users/1`|`-`|`{games: [{game details},...], "performance summary": {}, "uid": 1, "username": "becca"`| Returns details for the user with `uid` `1`. Details include all the games played and a summary of performance. The performance summary includes guess distribution, games won, total games, win percentage, and current win streak. |
+| `DELETE`| `/users/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete users"}, 400`  `{"success": f"delete user 1"}, 200` |Deletes one user with `uid` `1` and associated games. The secret key is stored in the environment variables. |
+| `DELETE`| `/users`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete users"}, 400` or `{"success": "delete all users"}, 200`|Deletes all users and associated games. The secret key is stored in the environment variables. |
+
+**Levels**
+| Method | URL | Request Body | Response Body | Description |
+|--|--|--|--|--|
+| `POST`| `/levels`|`-` |`{"easy":{params}, "standard":{params}, "hard":{params}}` |Seeds the database with the level parameters coded in the `levels.py` file. |
+| `GET`| `/levels`|`-`|`{"easy":{params}, "standard":{params}, "hard":{params}}` |Returns the parameters for all levels. |
+| `GET`| `/levels/1`|`-` |`{"name": "easy", "params": {...}` |Returns the parameters for one level with `id` `1`. |
 
 ## Thank You
 
