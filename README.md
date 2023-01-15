@@ -28,6 +28,9 @@ The Mastermind Web Application (the game!) that uses this API is deployed here: 
     ```bash
     (venv) $ pip install -r requirements.txt
     ```
+
+    Future instructions will show `(venv) $` in front of terminal commands as a reminder that commands should be run in the terminal with an activated `venv`. 
+
 1. Set up the development and test databases
     - Create two Postgres databases:
         - A development database named `mastermind_development_db`
@@ -57,9 +60,11 @@ The Mastermind Web Application (the game!) that uses this API is deployed here: 
         ```
 
     - Apply migrations to your database.
-        `flask db upgrade`.
+        
+        `(venv) $ flask db upgrade`
 
 1. Run the server.
+    
     `FLASK_ENV=development flask run`
 
 1. Navigate to `http://127.0.0.1:5000/` in the browser. You should see the following response:
@@ -70,7 +75,7 @@ The Mastermind Web Application (the game!) that uses this API is deployed here: 
 
 To play the game with the locally running server, we will use the provided CLI.
 
-1. Run the CLI with the command `python3 cli/main.py`.
+1. Run the CLI with the command `(venv) $ python3 cli/main.py`.
 
 1. You may also play using the CLI and the deployed API here: [https://replit.com/@BeccaElenzil/mastermind-cli](https://replit.com/@BeccaElenzil/mastermind-cli)
 
@@ -98,12 +103,12 @@ To run the React App with the locally running Flask server, complete the followi
 
 ## Testing
 
-Comprehensive unit tests can be run with the command `pytest`.
+Comprehensive unit tests can be run with the command `(venv) $ pytest`.
 
 A code coverage report was created with the following command:
 
 ```bash
-pytest --cov=app --cov-report html --cov-report term
+(venv) $ pytest --cov=app --cov-report html --cov-report term
 ```
 
 The coverage report is available in `htmlcov/index.html`.
