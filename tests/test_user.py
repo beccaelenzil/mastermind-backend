@@ -77,9 +77,9 @@ def test_win_2_lose_1(client, user_win_2_lose_1):
     response_body = response.get_json()
     summary = response_body["performance summary"]
 
-    assert summary["Games won"] == 2
+    assert summary["Wins"] == 2
     assert summary["Win Streak"] == 2
-    assert summary["Total games"] == 3
+    assert summary["Total Games"] == 3
     assert summary["Win %"] == 66.67
     assert len(response_body["games"]) == 3
 
@@ -95,9 +95,9 @@ def test_user_no_games(client, users2):
     response_body = response.get_json()
     summary = response_body["performance summary"]
 
-    assert summary["Games won"] == 0
+    assert summary["Wins"] == 0
     assert summary["Win Streak"] == 0
-    assert summary["Total games"] == 0
+    assert summary["Total Games"] == 0
     assert summary["Win %"] == 0
     assert len(response_body["games"]) == 0
 

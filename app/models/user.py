@@ -15,12 +15,15 @@ class User(db.Model):
             "username": self.email,
             "games": [game.to_json() for game in self.games],
             "performance summary": self.summary()
+
         }
 
     def to_json_less_detail(self):
         return {
+            "username": self.email,
             "uid": self.uid,
             "num games": len(self.games),
+            "wins": self.summary()["Wins"]
         }
 
     def sort_games(self):
@@ -84,8 +87,8 @@ class User(db.Model):
         summary_json = {
             "Win Streak":  self.win_streak(),
             "Win %": self.win_percentage()["percent"],
-            "Games won": self.win_percentage()["win"],
-            "Total games": self.win_percentage()["total"],
+            "Wins": self.win_percentage()["win"],
+            "Total Games": self.win_percentage()["total"],
         }
 
         if (len(self.games)):
