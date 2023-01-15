@@ -13,7 +13,7 @@ The Mastermind Web Application that uses this API can be found here: [https://be
 
 1. Fork (optional) and clone this repo. If you choose to fork the repo, make sure to include all branches.
     - Navigate to the repo on your computer
-1. Checkout the `local` branch.
+1. Check out the `local` branch.
 1. Create and activate a virtual environment
     
     ```bash
@@ -89,7 +89,7 @@ To run the React App with the locally running Flask server, complete the followi
     //const url = "https://becca-mastermind.herokuapp.com/";
     const url = "http://127.0.0.1:5000/";
     ```
-1. Navigate to `http://localhost:3000/` and enjoy the 🦄s, 💚s, and 🥳s ! :)
+1. Navigate to `http://localhost:3000/` and enjoy the 🦄s, 💚s, and 🥳s! :)
 
 ## Mastermind API Routes
 
@@ -104,7 +104,7 @@ Below, find a high-level summary of the endpoints provided by the Mastermind API
 **Games**
 | Method | URL | Request Body | Response Body | Description |
 |--|--|--|--|--|
-| `GET`| `/games/1`|`-`|`{"code": "hidden","id": 1, "level": "easy","level_params": {...},"plays": [{},...],"user_id": null}` | Details about the game with `id` one are returned in the response body. The code is hidden until the game is won or the max number of guesses are used.|
+| `GET`| `/games/1`|`-`|`{"code": "hidden","id": 1, "level": "easy","level_params": {...},"plays": [{},...],"user_id": null}` | Details about the game with `id` one are returned in the response body. The code is hidden until the game is won or the max number of guesses is used.|
 | `GET`| `/games`|`-` |`[List of game dictionaries]` | Details about all the games in the database are returned as a list of dictionaries |
 | `DELETE`| `/games/1`| `{"admin_key": "secret key"}` |`{"error": "must be admin to delete games"}, 400`  `{"success": f"delete game 1"}, 200` |Deletes one game with id 1 and associated plays. The secret key is stored in the environment variables. |
 | `DELETE`| `/games`|`{"admin_key": "secret key"}` | `{"error": "must be admin to delete games"}, 400` or `{"success": "delete all games"}, 200`|Deletes all games and associated plays. The secret key is stored in the environment variables. |
@@ -123,7 +123,7 @@ Below, find a high-level summary of the endpoints provided by the Mastermind API
 |--|--|--|--|--|
 | `POST`| `/levels`|`-` |`{"easy":{params}, "standard":{params}, "hard":{params}}` |This POST request seeds the database with the level parameters coded in the `levels.py` file. |
 | `GET`| `/levels`|`-`|`{"easy":{params}, "standard":{params}, "hard":{params}}` |The parameters for all levels are returned. |
-| `GET`| `/levels/1`|`-` |`{"name": "easy", "params": {...}` |The parameters for one level with id 1 is returned. |
+| `GET`| `/levels/1`|`-` |`{"name": "easy", "params": {...}` |The parameters for one level with id 1 are returned. |
 
 ## Testing
 
@@ -161,4 +161,4 @@ The React app [https://beccaelenzil.github.io/mastermind-frontend/](https://becc
 
 ## Thank You
 
-I hope you enjoyed this implementation of Mastermind !
+I hope you enjoyed this implementation of Mastermind!
