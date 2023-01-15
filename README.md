@@ -2,11 +2,14 @@
 
 This repo has the source code for the Mastermind API, created for the LinkedIn Reach Software Engineering Apprenticeship Application. The API is written in Python using the Flask framework.
 
-## Web App
+To play the game, go to https://beccaelenzil.github.io/mastermind-frontend/
+
+## Deployment
 
 The Mastermind API is deployed here: https://becca-mastermind.herokuapp.com/. 
 
-The Mastermind Web Application that uses this API can be found here: https://beccaelenzil.github.io/mastermind-frontend/ ([repo](https://github.com/beccaelenzil/mastermind-frontend)).
+The Mastermind Web Application (the game!) that uses this API is deployed here: https://beccaelenzil.github.io/mastermind-frontend/ 
+- The repo for the front-end can be found here: https://github.com/beccaelenzil/mastermind-frontend.
 
 
 ## Running the Server Locally [source](https://github.com/AdaGold/retro-video-store/blob/master/ada-project-docs/setup.md)
