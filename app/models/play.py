@@ -42,7 +42,7 @@ class Play(db.Model):
         level = Level.query.get(self.game.level_id)
         params = level.params()
         max_guesses = params["max_guesses"]
-        if self.win() or len(self.game.plays) == max_guesses:
+        if self.win() or (len(self.game.plays) == max_guesses and self == self.game.plays[-1]):
             return self.game.code
         else:
             return "hidden"
