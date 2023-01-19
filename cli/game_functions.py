@@ -102,9 +102,10 @@ def initialize():
     code = "YYYY"
     guess = "XXXX"
     guesses = []
+    code_guesses = []
     game_id = None
     status_code = 400
-    return [turn, code, guess, guesses, game_id, status_code]
+    return [turn, code, guess, guesses, game_id, status_code, code_guesses]
 
 
 def print_play_info(guesses):

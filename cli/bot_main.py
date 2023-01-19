@@ -15,14 +15,14 @@ initial_guesses = initialize_guesses(level)
 play_num = 0
 number_freq = {}
 while play == "Y":
-    [turn, code, guess, guesses, game_id, status_code] = initialize()
+    [turn, code, guess, guesses, game_id, status_code, code_guesses] = initialize()
 
     while code != guess and turn < MAX_TRIES:
         while status_code != 201:
             if play_num < len(initial_guesses):
                 guess = initial_guesses[play_num]
             else:
-                guess = generate_code(level, number_freq)
+                guess = generate_code(level, number_freq, code_guesses)
             response = requests.post(f"{url}plays/",
                                      json={"code": guess, "level": level, "game_id": game_id, "user_id": user_id})
             status_code = response.status_code
@@ -31,6 +31,7 @@ while play == "Y":
                 print(response_body["error"])
 
         response_body = response.json()
+        code_guesses.append(guess)
         guesses.append([guess, response_body["correct_nums"],
                        response_body["correct_pos"]])
         code = response_body["answer"]
@@ -47,14 +48,14 @@ while play == "Y":
         turn += 1
         if response_body["win"]:
             print_play_info(guesses)
-            print("You guessed it!")
+            print("The bot guessed it!")
             print("The code was... ", code)
             initial_guesses = initialize_guesses(level)
             play_num = 0
             [play, game_id] = play_again()
         elif turn == MAX_TRIES:
             print_play_info(guesses)
-            print("You ran out of guesses.")
+            print("The bot ran out of guesses.")
             print("The code was... ", code)
             initial_guesses = initialize_guesses(level)
             play_num = 0

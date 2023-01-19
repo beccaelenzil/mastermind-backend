@@ -28,18 +28,18 @@ def update_number_freq(guess, cor_nums, number_freq):
     return number_freq
 
 
-def generate_code(level, number_freq):
+def generate_code(level, number_freq, guesses):
     level_info = get_level_info()
-    code = ""
-    count = 0
-    numbers = []
-    number_freq_copy = copy.copy(number_freq)
-
-    while count < level_info[level]["num"]:
-        number = str(random.choice(list(number_freq_copy.keys())))
-        if number_freq_copy[number] > 0:
-            code += number
-            number_freq_copy[number] -= 1
-            count += 1
+    code = guesses[0]
+    while code in guesses:
+        code = ""
+        count = 0
+        number_freq_copy = copy.copy(number_freq)
+        while count < level_info[level]["num"]:
+            number = str(random.choice(list(number_freq_copy.keys())))
+            if number_freq_copy[number] > 0:
+                code += number
+                number_freq_copy[number] -= 1
+                count += 1
 
     return code
