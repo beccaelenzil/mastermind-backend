@@ -2,13 +2,13 @@
 
 This repo has the source code for the Mastermind API, created for the LinkedIn Reach Software Engineering Apprenticeship Application. The API is written in Python using the Flask framework.
 
-To play the game, go to https://beccaelenzil.github.io/mastermind-frontend/
+~~To play the game, go to https://beccaelenzil.github.io/mastermind-frontend/~~
 
 ## Deployment
 
-The Mastermind API is deployed here: https://becca-mastermind.herokuapp.com/. 
+~~The Mastermind API is deployed here: https://becca-mastermind.herokuapp.com/~~. 
 
-The Mastermind Web Application (the game!) that uses this API is deployed here: https://beccaelenzil.github.io/mastermind-frontend/ 
+~~The Mastermind Web Application (the game!) that uses this API is deployed here: https://beccaelenzil.github.io/mastermind-frontend/~~
 - The repo for the front-end can be found here: https://github.com/beccaelenzil/mastermind-frontend.
 
 
@@ -86,7 +86,7 @@ To play the game with the locally running server, we will use the provided CLI.
 
 ## Playing the Game with the React Web App
 
-The Mastermind Web Application that uses this API can be found here: https://beccaelenzil.github.io/mastermind-frontend/.
+~~The Mastermind Web Application that uses this API can be found here: https://beccaelenzil.github.io/mastermind-frontend/.~~
 
 You may also choose to clone this react app and run it locally. You first need to run the CLI to make sure that the database is seeded with the level information.
 
@@ -133,7 +133,7 @@ While authentication is not implemented, the routes for Google authentication wi
 
 ### Graphics
 
-The React app [https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/) translates the number sequence into fun emojis!
+The React app ~~[https://beccaelenzil.github.io/mastermind-frontend/](https://beccaelenzil.github.io/mastermind-frontend/)~~ translates the number sequence into fun emojis!
 
 ## Mastermind API Routes
 
